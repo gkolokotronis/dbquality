@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="distinct">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="columns">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="column" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="id" type="xs:int"/>
+										<xs:element name="name" type="xs:string"/>
+										<xs:element name="tableName" type="xs:string"/>
+										<xs:element name="databaseName" type="xs:string"/>
+										<xs:element name="type">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:enumeration value="INTEGER"/>
+													<xs:enumeration value="VARCHAR"/>
+													<xs:enumeration value="DECIMAL"/>
+													<xs:enumeration value="DATE"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="dateFormat" type="xs:string" minOccurs="0"/>
+										<xs:element name="values">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="value" maxOccurs="unbounded" type="xs:string"></xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="nullable" type="xs:string"/>
+										<xs:element name="whereClause" minOccurs="0" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
