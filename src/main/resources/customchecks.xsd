@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="custom">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="checks">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="check" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="checkName" type="xs:string"/>
+										<xs:element name="tableName" type="xs:string"/>
+										<xs:element name="databaseName" type="xs:string"/>
+										<xs:element name="whereClause" minOccurs="0" />
+										<xs:element name="expectedCountCheck">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:enumeration value="GREATER_THAN_OR_EQUAL_TO"/>
+													<xs:enumeration value="GREATER_THAN"/>
+													<xs:enumeration value="LESS_THAN_OR_EQUAL_TO"/>
+													<xs:enumeration value="LESS_THAN"/>
+													<xs:enumeration value="EQUAL_TO"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="expectedCount" type="xs:int"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
