@@ -3,6 +3,7 @@ package com.dbquality.distinct.checks.xml;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.dbquality.checks.xml.ChecksCreatorUtils;
 import com.dbquality.consts.AppConsts;
 import com.dbquality.distinct.checks.elements.DistinctRootElement;
 import com.dbquality.properties.ApplicationPropertiesHolder;
@@ -42,7 +43,7 @@ public final class DistinctXMLHolder {
 
 		System.out.println("Started loading " + xmlDistinct);
 		logger.info("Started loading " + xmlDistinct);
-		distinctElement = new DistinctChecksCreator().loadDQChecks(xmlDistinct);
+		distinctElement = ChecksCreatorUtils.loadDistinctChecks(xmlDistinct, AppConsts.DISTINCT_XSD_LOCATION);
 
 	}
 

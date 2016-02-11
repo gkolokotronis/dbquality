@@ -1,4 +1,4 @@
-package com.dbquality.distinct.checks.xml;
+package com.dbquality.checks.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,8 +24,10 @@ import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import com.dbquality.consts.AppConsts;
+import com.dbquality.custom.checks.elements.CustomRootElement;
+import com.dbquality.custom.checks.xml.CustomModule;
 import com.dbquality.distinct.checks.elements.DistinctRootElement;
+import com.dbquality.distinct.checks.xml.DistinctModule;
 import com.dbquality.xsd.ResourceResolver;
 
 /**
@@ -35,9 +37,13 @@ import com.dbquality.xsd.ResourceResolver;
  *         Class which parses the xml with the checks
  *
  */
-public class DistinctChecksCreator {
+public final class ChecksCreatorUtils {
 
-	private static final Logger logger = LogManager.getLogger(DistinctChecksCreator.class);
+	private static final Logger logger = LogManager.getLogger(ChecksCreatorUtils.class);
+
+	private ChecksCreatorUtils() {
+		// to avoid instantiation
+	}
 
 	/**
 	 * Creates a DistinctRootElement object based on XML data.
@@ -45,7 +51,7 @@ public class DistinctChecksCreator {
 	 * @param xmlFilePath
 	 *            - name of the XML file
 	 */
-	public DistinctRootElement loadDQChecks(String xmlFilePath) {
+	public static DistinctRootElement loadDistinctChecks(String xmlFilePath, String xsdPath) {
 
 		DistinctRootElement result = null;
 		InputStream inputStream = null;
@@ -56,8 +62,42 @@ public class DistinctChecksCreator {
 			throw new RuntimeException("Cannot find file " + xmlFilePath, e);
 		}
 
-		validateXMLSchema(xmlFilePath);
+		validateXMLSchema(xmlFilePath, xsdPath);
 		DigesterLoader digesterLoader = DigesterLoader.newLoader(new DistinctModule());
+		Digester digester = digesterLoader.newDigester();
+
+		try {
+			result = digester.parse(inputStream);
+		} catch (IOException e) {
+			logger.error("Input/outpur error while parsing xml file " + xmlFilePath);
+			throw new RuntimeException("Input/outpur error while parsing xml file " + xmlFilePath, e);
+		} catch (SAXException e) {
+			logger.error("Error while parsing xml file " + xmlFilePath);
+			throw new RuntimeException("Error while parsing xml file " + xmlFilePath, e);
+		}
+
+		return result;
+	}
+
+	/**
+	 * Creates a CustomRootElement object based on XML data.
+	 * 
+	 * @param xmlFilePath
+	 *            - name of the XML file
+	 */
+	public static CustomRootElement loadCustomChecks(String xmlFilePath, String xsdPath) {
+
+		CustomRootElement result = null;
+		InputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(xmlFilePath);
+		} catch (FileNotFoundException e) {
+			logger.error("Cannot find file " + xmlFilePath);
+			throw new RuntimeException("Cannot find file " + xmlFilePath, e);
+		}
+
+		validateXMLSchema(xmlFilePath, xsdPath);
+		DigesterLoader digesterLoader = DigesterLoader.newLoader(new CustomModule());
 		Digester digester = digesterLoader.newDigester();
 
 		try {
@@ -80,7 +120,7 @@ public class DistinctChecksCreator {
 	 * @param xmlPath
 	 *            - xml file to be validated *
 	 */
-	public void validateXMLSchema(String xmlPath) {
+	public static void validateXMLSchema(String xmlPath, String xsdPath) {
 
 		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 		builderFactory.setNamespaceAware(true);
@@ -94,8 +134,7 @@ public class DistinctChecksCreator {
 			parser = builderFactory.newDocumentBuilder();
 
 		} catch (ParserConfigurationException e) {
-			logger.error("Something went wrong while loading xsd file " + AppConsts.XSD_LOCATION
-					+ "from the root of the jar file");
+			logger.error("Something went wrong while loading xsd file " + xsdPath + "from the root of the jar file");
 			throw new RuntimeException("Something went wrong while loading xsd file ", e);
 		}
 
@@ -121,15 +160,14 @@ public class DistinctChecksCreator {
 		// responsible for resolving the imported XSD's
 		factory.setResourceResolver(new ResourceResolver());
 
-		Source schemaFile = new StreamSource(getClass().getClassLoader().getResourceAsStream(AppConsts.XSD_LOCATION));
+		Source schemaFile = new StreamSource(ChecksCreatorUtils.class.getClassLoader().getResourceAsStream(xsdPath));
 		Schema schema = null;
 
 		try {
 			schema = factory.newSchema(schemaFile);
 		} catch (SAXException e) {
-			logger.error("Something went wrong while parsing XSD file " + AppConsts.XSD_LOCATION);
-			throw new IllegalArgumentException("Something went wrong while parsing XSD file " + AppConsts.XSD_LOCATION,
-					e);
+			logger.error("Something went wrong while parsing XSD file " + xsdPath);
+			throw new IllegalArgumentException("Something went wrong while parsing XSD file " + xsdPath, e);
 
 		}
 
@@ -138,10 +176,9 @@ public class DistinctChecksCreator {
 		try {
 			validator.validate(new DOMSource(document));
 		} catch (SAXException | IOException e) {
-			logger.error("Error while validating file: " + xmlPath + " with " + AppConsts.XSD_LOCATION);
+			logger.error("Error while validating file: " + xmlPath + " with " + xsdPath);
 			throw new RuntimeException(
-					"Something went wrong while validating XML " + xmlPath + " with XSD file " + AppConsts.XSD_LOCATION,
-					e);
+					"Something went wrong while validating XML " + xmlPath + " with XSD file " + xsdPath, e);
 		}
 
 	}
