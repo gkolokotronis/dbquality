@@ -6,6 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.dbquality.consts.AppConsts;
+import com.dbquality.custom.checks.elements.CustomRootElement;
+import com.dbquality.custom.checks.xml.CustomXMLHolder;
 import com.dbquality.distinct.checks.elements.DistinctRootElement;
 import com.dbquality.distinct.checks.sql.DistinctSQLExecutionHandler;
 import com.dbquality.distinct.checks.xml.DistinctXMLHolder;
@@ -27,6 +29,7 @@ public class DBQualityExecutionHandler {
 
 		checkConfigProperties();
 		runDistinctChecks();
+		runCustomChecks();
 
 		logger.info("Application Ended");
 		System.out.println("Application Ended");
@@ -63,6 +66,16 @@ public class DBQualityExecutionHandler {
 		DistinctSQLExecutionHandler distinctExec = new DistinctSQLExecutionHandler(distinctElement);
 
 		distinctExec.execute();
+	}
+
+	/**
+	 * Initiates the object for creating and running the distinct checks
+	 */
+	protected void runCustomChecks() {
+		logger.info("Started working on custom checks");
+
+		CustomRootElement customElement = CustomXMLHolder.getInstance().getCustomElement();
+
 	}
 
 }

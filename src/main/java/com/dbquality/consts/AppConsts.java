@@ -14,7 +14,9 @@ public final class AppConsts {
 	 */
 	public static String LOG_LOCATION = "/home/g0d4/workspace/dbquality/target/errors.txt";
 
-	public static String XSD_LOCATION = "distinctchecks.xsd";
+	public static String DISTINCT_XSD_LOCATION = "distinctchecks.xsd";
+
+	public static String CUSTOM_XSD_LOCATION = "customchecks.xsd";
 
 	/**
 	 * Properties file Constants
@@ -46,4 +48,5 @@ public final class AppConsts {
 
 	public static String PROPS_CHECKS_DISTINCT_XML_LOCATION = "checks.distinct.xml.location";
 
+	public static String PROPS_CHECKS_CUSTOM_XML_LOCATION = "checks.custom.xml.location";
 }
