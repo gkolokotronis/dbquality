@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -56,7 +57,9 @@ public class DistinctSQLExecutionHandler extends SQLExecutionHandler {
 			sb.append("SELECT DISTINCT ");
 			sb.append(column.getName());
 			sb.append(" FROM " + column.getDatabaseName() + "." + column.getTableName() + ";");
-			sb.append(column.getWhereClause());
+			if (StringUtils.isNotEmpty(column.getWhereClause())) {
+				sb.append(column.getWhereClause());
+			}
 
 			String sql = sb.toString();
 			Integer key = column.getId();

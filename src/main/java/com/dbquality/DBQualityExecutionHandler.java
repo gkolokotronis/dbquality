@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.dbquality.consts.AppConsts;
 import com.dbquality.custom.checks.elements.CustomRootElement;
+import com.dbquality.custom.checks.sql.CustomSQLExecutionHandler;
 import com.dbquality.custom.checks.xml.CustomXMLHolder;
 import com.dbquality.distinct.checks.elements.DistinctRootElement;
 import com.dbquality.distinct.checks.sql.DistinctSQLExecutionHandler;
@@ -75,6 +76,10 @@ public class DBQualityExecutionHandler {
 		logger.info("Started working on custom checks");
 
 		CustomRootElement customElement = CustomXMLHolder.getInstance().getCustomElement();
+
+		CustomSQLExecutionHandler customExec = new CustomSQLExecutionHandler(customElement);
+
+		customExec.execute();
 
 	}
 
