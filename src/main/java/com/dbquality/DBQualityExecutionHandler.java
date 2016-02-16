@@ -12,6 +12,7 @@ import com.dbquality.custom.checks.xml.CustomXMLHolder;
 import com.dbquality.distinct.checks.elements.DistinctRootElement;
 import com.dbquality.distinct.checks.sql.DistinctSQLExecutionHandler;
 import com.dbquality.distinct.checks.xml.DistinctXMLHolder;
+import com.dbquality.properties.ApplicationPropertiesHolder;
 
 /**
  * This class is responsible for handling the execution of the application
@@ -23,14 +24,28 @@ public class DBQualityExecutionHandler {
 
 	private static final Logger logger = LogManager.getLogger(DBQualityExecutionHandler.class);
 
+	public boolean runDistinctChecks;
+
+	public boolean runCustomChecks;
+
+	public DBQualityExecutionHandler() {
+		this.runCustomChecks = false;
+		this.runDistinctChecks = false;
+	}
+
 	public void execute() {
 
 		System.out.println("Application Started");
 		logger.info("Application Started");
 
 		checkConfigProperties();
-		runDistinctChecks();
-		runCustomChecks();
+		setProperties();
+		if (isRunDistinctChecks()) {
+			runDistinctChecks();
+		}
+		if (isRunCustomChecks()) {
+			runCustomChecks();
+		}
 
 		logger.info("Application Ended");
 		System.out.println("Application Ended");
@@ -41,7 +56,7 @@ public class DBQualityExecutionHandler {
 	 * Checks if application properties file exists or not.
 	 *
 	 */
-	protected void checkConfigProperties() throws IllegalArgumentException {
+	private void checkConfigProperties() throws IllegalArgumentException {
 		logger.info("Checking if " + AppConsts.PROPERTIES_FILE_NAME + " exists");
 
 		String propertiesPath = System.getProperty("user.dir") + System.getProperty("file.separator")
@@ -59,7 +74,7 @@ public class DBQualityExecutionHandler {
 	/**
 	 * Initiates the object for creating and running the distinct checks
 	 */
-	protected void runDistinctChecks() {
+	private void runDistinctChecks() {
 		logger.info("Started working on distinct checks");
 
 		DistinctRootElement distinctElement = DistinctXMLHolder.getInstance().getDistinctElement();
@@ -72,7 +87,7 @@ public class DBQualityExecutionHandler {
 	/**
 	 * Initiates the object for creating and running the distinct checks
 	 */
-	protected void runCustomChecks() {
+	private void runCustomChecks() {
 		logger.info("Started working on custom checks");
 
 		CustomRootElement customElement = CustomXMLHolder.getInstance().getCustomElement();
@@ -81,6 +96,52 @@ public class DBQualityExecutionHandler {
 
 		customExec.execute();
 
+	}
+
+	/**
+	 * Sets the properties according to the properties file
+	 */
+	private void setProperties() {
+		String runDistinctChecks;
+		String runCustomChecks;
+
+		runDistinctChecks = ApplicationPropertiesHolder.getInstance().getProperties()
+				.getProperty(AppConsts.PROPS_CHECKS_DISTINCT_RUN);
+		runCustomChecks = ApplicationPropertiesHolder.getInstance().getProperties()
+				.getProperty(AppConsts.PROPS_CHECKS_DISTINCT_RUN);
+
+		setRunDistinctChecks(Boolean.parseBoolean(runDistinctChecks));
+		setRunCustomChecks(Boolean.parseBoolean(runCustomChecks));
+	}
+
+	/**
+	 * @return the runDistinctChecks
+	 */
+	public boolean isRunDistinctChecks() {
+		return runDistinctChecks;
+	}
+
+	/**
+	 * @param runDistinctChecks
+	 *            the runDistinctChecks to set
+	 */
+	public void setRunDistinctChecks(boolean runDistinctChecks) {
+		this.runDistinctChecks = runDistinctChecks;
+	}
+
+	/**
+	 * @return the runCustomChecks
+	 */
+	public boolean isRunCustomChecks() {
+		return runCustomChecks;
+	}
+
+	/**
+	 * @param runCustomChecks
+	 *            the runCustomChecks to set
+	 */
+	public void setRunCustomChecks(boolean runCustomChecks) {
+		this.runCustomChecks = runCustomChecks;
 	}
 
 }

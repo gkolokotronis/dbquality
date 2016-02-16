@@ -55,10 +55,11 @@ public class CustomSQLExecutionHandler extends SQLExecutionHandler {
 
 			StringBuilder sb = new StringBuilder();
 			sb.append("SELECT COUNT(*) ");
-			sb.append(" FROM " + check.getDatabaseName() + "." + check.getTableName() + ";");
+			sb.append("FROM " + check.getDatabaseName() + "." + check.getTableName() + " ");
 			if (StringUtils.isNotEmpty(check.getWhereClause())) {
 				sb.append(check.getWhereClause());
 			}
+			sb.append(";");
 
 			String sql = sb.toString();
 			String key = check.getCheckName();
