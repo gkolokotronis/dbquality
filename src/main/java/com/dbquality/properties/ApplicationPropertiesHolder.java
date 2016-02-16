@@ -20,7 +20,7 @@ public final class ApplicationPropertiesHolder {
 	private Properties properties = new Properties();
 
 	private ApplicationPropertiesHolder() {
-		// todo change this
+		// TODO change this
 		String propertiesPath = System.getProperty("user.dir") + System.getProperty("file.separator")
 				+ AppConsts.PROPERTIES_FILE_NAME;
 		load(propertiesPath);
@@ -31,7 +31,7 @@ public final class ApplicationPropertiesHolder {
 	}
 
 	/**
-	 * Returns the XML file of distinct checks.
+	 * Returns the properties file.
 	 * 
 	 * @return DistinctElement
 	 */
@@ -39,6 +39,12 @@ public final class ApplicationPropertiesHolder {
 		return this.properties;
 	}
 
+	/**
+	 * It loads the properties path
+	 * 
+	 * @param propertiesFilePath
+	 *            - the file path of the properties file
+	 */
 	private void load(String propertiesFilePath) {
 		InputStream inputStream = null;
 		try {

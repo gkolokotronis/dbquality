@@ -53,7 +53,7 @@ public final class CustomXMLHolder {
 	 * @return true if the xml is valid and false otherwise
 	 */
 	private boolean validate() {
-		CustomXMLValidator validator = new CustomXMLValidator();
+		CustomXMLValidator validator = new CustomXMLValidator(getCustomElement().getChecks());
 		return validator.validate();
 
 	}

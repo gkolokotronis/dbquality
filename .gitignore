@@ -18,7 +18,12 @@ hs_err_pid*
 
 .gitignore~
 
+#ignore any application.properties file that is located in the root folder(it is used for debugging purposes)
+application.properties
 
 #Ignoring target directory
 target/
+
+#
+logs/
 

@@ -84,7 +84,7 @@ public class DistinctSQLResultValidator {
 
 			switch (column.getType()) {
 			case DATE:
-				if (TypeUtils.validateDate(valueOfColumn, column.getDateFormat())) {
+				if (!TypeUtils.validateDate(valueOfColumn, column.getDateFormat())) {
 					logger.error("ERROR - Cannot parse value " + valueOfColumn + " as DATE with dateformat: "
 							+ column.getDateFormat() + " . Found in column: " + column.getName() + " table: "
 							+ column.getTableName() + " database: " + column.getDatabaseName());

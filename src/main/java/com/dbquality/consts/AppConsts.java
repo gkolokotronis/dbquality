@@ -49,4 +49,9 @@ public final class AppConsts {
 	public static String PROPS_CHECKS_DISTINCT_XML_LOCATION = "checks.distinct.xml.location";
 
 	public static String PROPS_CHECKS_CUSTOM_XML_LOCATION = "checks.custom.xml.location";
+
+	public static String PROPS_CHECKS_DISTINCT_RUN = "checks.distinct.run";
+
+	public static String PROPS_CHECK_CUSTOM_RUN = "checks.custom.run";
+
 }
