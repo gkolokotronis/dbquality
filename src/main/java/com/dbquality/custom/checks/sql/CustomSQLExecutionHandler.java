@@ -15,6 +15,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.dbquality.custom.checks.elements.CustomCheckElement;
 import com.dbquality.custom.checks.elements.CustomRootElement;
+import com.dbquality.properties.ApplicationMessagesHolder;
+import com.dbquality.properties.MessageCodes;
 import com.dbquality.sql.SQLExecutionHandler;
 
 /**
@@ -44,8 +46,8 @@ public class CustomSQLExecutionHandler extends SQLExecutionHandler {
 
 	@Override
 	protected void sqlsPopulation() {
-		logger.info("Started populating sqls for custom checks");
-		System.out.println("Started populating sqls for custom checks");
+		logger.info(ApplicationMessagesHolder.getInstance()
+				.getMessage(MessageCodes.MSG_CUSTOM_CHECKS_START_POPULATION_SQL));
 
 		ArrayList<String> checkNameList = new ArrayList<String>();
 		Map<String, CustomCheckElement> checkElements = new HashMap<String, CustomCheckElement>();
@@ -78,8 +80,8 @@ public class CustomSQLExecutionHandler extends SQLExecutionHandler {
 	@Override
 	protected void sqlExecutionAndValidation() {
 
-		logger.info("Started executing the sqls and validating the results for custom checks");
-		System.out.println("Started executing the sqls and validating the results for custom checks");
+		logger.info(ApplicationMessagesHolder.getInstance()
+				.getMessage(MessageCodes.MSG_CUSTOM_CHECKS_START_EXECUTION_VALIDATION_SQL));
 
 		Connection conn = getConnection();
 
