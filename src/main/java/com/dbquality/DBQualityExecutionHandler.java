@@ -2,6 +2,7 @@ package com.dbquality;
 
 import java.io.File;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,6 +13,7 @@ import com.dbquality.custom.checks.xml.CustomXMLHolder;
 import com.dbquality.distinct.checks.elements.DistinctRootElement;
 import com.dbquality.distinct.checks.sql.DistinctSQLExecutionHandler;
 import com.dbquality.distinct.checks.xml.DistinctXMLHolder;
+import com.dbquality.exceptions.ExceptionFactory;
 import com.dbquality.properties.ApplicationMessagesHolder;
 import com.dbquality.properties.ApplicationPropertiesHolder;
 import com.dbquality.properties.MessageCodes;
@@ -66,10 +68,8 @@ public class DBQualityExecutionHandler {
 		boolean exists = varTmpDir.exists();
 
 		if (!exists) {
-			String errorMessage = ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.SYS_PROPERTY_FILE_NOT_FOUND,
-					propertiesPath);
-			logger.error(errorMessage);
-			throw new IllegalArgumentException(errorMessage);
+			throw ExceptionFactory.createException(IllegalArgumentException.class,
+					MessageCodes.ERR_PROPERTY_FILE_NOT_FOUND, null, logger, Level.ERROR, propertiesPath);
 
 		}
 	}
