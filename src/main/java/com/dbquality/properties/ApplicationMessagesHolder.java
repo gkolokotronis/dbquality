@@ -21,7 +21,7 @@ public final class ApplicationMessagesHolder {
 
 	private final static String BUNDLE_NAME = "ApplicationMessages";
 
-	private final static String MESSAGE_CODE_PREFIX = "DB";
+	private final static String MESSAGE_CODE_PREFIX = "DBQ";
 
 	/**
 	 * Resource bundle, contains all the messages from

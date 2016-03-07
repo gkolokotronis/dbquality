@@ -98,7 +98,8 @@ public class CustomSQLExecutionHandler extends SQLExecutionHandler {
 				validateResult(rs, key);
 
 			} catch (SQLException e) {
-				logger.error("Something went wrong while executing " + sqlToExecute + e.getMessage());
+				logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_WHILE_EXECUTING_SQL,
+						sqlToExecute, e.getMessage()));
 			} finally {
 				DbUtils.closeQuietly(rs);
 				DbUtils.closeQuietly(runCheck);
@@ -129,7 +130,8 @@ public class CustomSQLExecutionHandler extends SQLExecutionHandler {
 		try {
 			resultValidator.validate();
 		} catch (SQLException e) {
-			logger.error("A database error has occurred while validating results for " + checkName + e.getMessage());
+			logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_WHILE_VALIDATING_RESULTS,
+					checkName, e.getMessage()));
 		}
 
 	}

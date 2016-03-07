@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.dbquality.consts.AppConsts;
+import com.dbquality.exceptions.ExceptionFactory;
 
 public final class ApplicationPropertiesHolder {
 
@@ -20,7 +22,7 @@ public final class ApplicationPropertiesHolder {
 	private Properties properties = new Properties();
 
 	private ApplicationPropertiesHolder() {
-		// TODO change this
+
 		String propertiesPath = System.getProperty("user.dir") + System.getProperty("file.separator")
 				+ AppConsts.PROPERTIES_FILE_NAME;
 		load(propertiesPath);
@@ -50,18 +52,16 @@ public final class ApplicationPropertiesHolder {
 		try {
 			inputStream = new FileInputStream(propertiesFilePath);
 		} catch (FileNotFoundException e) {
-			logger.error("Property file '" + propertiesFilePath + "' not found");
-			throw new RuntimeException("Property file '" + propertiesFilePath + "' not found", e);
+			throw ExceptionFactory.createException(RuntimeException.class, MessageCodes.ERR_PROPERTY_FILE_NOT_FOUND, e,
+					logger, Level.ERROR, propertiesFilePath);
 
 		}
 
 		try {
 			properties.load(inputStream);
 		} catch (IOException e) {
-			logger.error("Something went wrong while reading property file '" + propertiesFilePath + "' not found");
-			throw new RuntimeException(
-					"Somethinh went wrong while reading property file '" + propertiesFilePath + "' not found", e);
-
+			throw ExceptionFactory.createException(RuntimeException.class, MessageCodes.ERR_WHILE_READING_PROPERTY_FILE,
+					e, logger, Level.ERROR, propertiesFilePath);
 		}
 
 	}
