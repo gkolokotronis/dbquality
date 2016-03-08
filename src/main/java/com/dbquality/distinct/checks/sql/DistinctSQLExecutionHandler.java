@@ -15,6 +15,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.dbquality.distinct.checks.elements.ColumnDistinctElement;
 import com.dbquality.distinct.checks.elements.DistinctRootElement;
+import com.dbquality.properties.ApplicationMessagesHolder;
+import com.dbquality.properties.MessageCodes;
 import com.dbquality.sql.SQLExecutionHandler;
 
 /**
@@ -44,8 +46,8 @@ public class DistinctSQLExecutionHandler extends SQLExecutionHandler {
 
 	@Override
 	protected void sqlsPopulation() {
-		logger.info("Started populating sqls for distinct checks");
-		System.out.println("Started populating sqls for distinct checks");
+		logger.info(ApplicationMessagesHolder.getInstance()
+				.getMessage(MessageCodes.MSG_DISTINCT_CHECKS_START_POPULATION_SQL));
 
 		ArrayList<Integer> keyList = new ArrayList<Integer>();
 		Map<Integer, ColumnDistinctElement> columnElements = new HashMap<Integer, ColumnDistinctElement>();
@@ -78,8 +80,8 @@ public class DistinctSQLExecutionHandler extends SQLExecutionHandler {
 	@Override
 	protected void sqlExecutionAndValidation() {
 
-		logger.info("Started executing the sqls and validating the results for distinct checks");
-		System.out.println("Started executing the sqls and validating the results for distinct checks");
+		logger.info(ApplicationMessagesHolder.getInstance()
+				.getMessage(MessageCodes.MSG_DISTINCT_CHECKS_START_EXECUTION_VALIDATION_SQL));
 
 		Connection conn = getConnection();
 
@@ -96,7 +98,8 @@ public class DistinctSQLExecutionHandler extends SQLExecutionHandler {
 				validateResult(rs, key);
 
 			} catch (SQLException e) {
-				logger.error("Something went wrong while executing " + sqlToExecute + e.getMessage());
+				logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_WRONG_EXECUTING_SQL,
+						sqlToExecute, e.getMessage()));
 			} finally {
 				DbUtils.closeQuietly(rs);
 				DbUtils.closeQuietly(runCheck);
@@ -128,7 +131,8 @@ public class DistinctSQLExecutionHandler extends SQLExecutionHandler {
 		try {
 			resultValidator.validate();
 		} catch (SQLException e) {
-			logger.error("A database error has occurred while validating results for " + key + e.getMessage());
+			logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_WHILE_VALIDATING_RESULTS,
+					key, e.getMessage()));
 		}
 
 	}

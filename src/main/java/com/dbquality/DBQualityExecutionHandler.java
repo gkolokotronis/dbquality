@@ -2,6 +2,7 @@ package com.dbquality;
 
 import java.io.File;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,7 +13,10 @@ import com.dbquality.custom.checks.xml.CustomXMLHolder;
 import com.dbquality.distinct.checks.elements.DistinctRootElement;
 import com.dbquality.distinct.checks.sql.DistinctSQLExecutionHandler;
 import com.dbquality.distinct.checks.xml.DistinctXMLHolder;
+import com.dbquality.exceptions.ExceptionFactory;
+import com.dbquality.properties.ApplicationMessagesHolder;
 import com.dbquality.properties.ApplicationPropertiesHolder;
+import com.dbquality.properties.MessageCodes;
 
 /**
  * This class is responsible for handling the execution of the application
@@ -35,8 +39,7 @@ public class DBQualityExecutionHandler {
 
 	public void execute() {
 
-		System.out.println("Application Started");
-		logger.info("Application Started");
+		logger.info(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.MSG_APPLICATION_STARTED));
 
 		checkConfigProperties();
 		setProperties();
@@ -47,8 +50,7 @@ public class DBQualityExecutionHandler {
 			runCustomChecks();
 		}
 
-		logger.info("Application Ended");
-		System.out.println("Application Ended");
+		logger.info(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.MSG_APPLICATION_ENDED));
 
 	}
 
@@ -57,7 +59,8 @@ public class DBQualityExecutionHandler {
 	 *
 	 */
 	private void checkConfigProperties() throws IllegalArgumentException {
-		logger.info("Checking if " + AppConsts.PROPERTIES_FILE_NAME + " exists");
+		logger.info(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.MSG_FILE_EXISTS,
+				AppConsts.PROPERTIES_FILE_NAME));
 
 		String propertiesPath = System.getProperty("user.dir") + System.getProperty("file.separator")
 				+ AppConsts.PROPERTIES_FILE_NAME;
@@ -65,8 +68,8 @@ public class DBQualityExecutionHandler {
 		boolean exists = varTmpDir.exists();
 
 		if (!exists) {
-			logger.error("Property file " + propertiesPath + " not found");
-			throw new IllegalArgumentException("Property file " + propertiesPath + " not found");
+			throw ExceptionFactory.createException(IllegalArgumentException.class,
+					MessageCodes.ERR_PROPERTY_FILE_NOT_FOUND, null, logger, Level.ERROR, propertiesPath);
 
 		}
 	}
@@ -75,7 +78,7 @@ public class DBQualityExecutionHandler {
 	 * Initiates the object for creating and running the distinct checks
 	 */
 	private void runDistinctChecks() {
-		logger.info("Started working on distinct checks");
+		logger.info(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.MSG_DISTINCT_CHECKS_START));
 
 		DistinctRootElement distinctElement = DistinctXMLHolder.getInstance().getDistinctElement();
 
@@ -88,7 +91,7 @@ public class DBQualityExecutionHandler {
 	 * Initiates the object for creating and running the distinct checks
 	 */
 	private void runCustomChecks() {
-		logger.info("Started working on custom checks");
+		logger.info(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.MSG_CUSTOM_CHECKS_START));
 
 		CustomRootElement customElement = CustomXMLHolder.getInstance().getCustomElement();
 

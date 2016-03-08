@@ -19,6 +19,7 @@ import javax.xml.validation.Validator;
 
 import org.apache.commons.digester3.Digester;
 import org.apache.commons.digester3.binder.DigesterLoader;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -28,6 +29,8 @@ import com.dbquality.custom.checks.elements.CustomRootElement;
 import com.dbquality.custom.checks.xml.CustomModule;
 import com.dbquality.distinct.checks.elements.DistinctRootElement;
 import com.dbquality.distinct.checks.xml.DistinctModule;
+import com.dbquality.exceptions.ExceptionFactory;
+import com.dbquality.properties.MessageCodes;
 import com.dbquality.xsd.ResourceResolver;
 
 /**
@@ -58,8 +61,8 @@ public final class ChecksCreatorUtils {
 		try {
 			inputStream = new FileInputStream(xmlFilePath);
 		} catch (FileNotFoundException e) {
-			logger.error("Cannot find file " + xmlFilePath);
-			throw new RuntimeException("Cannot find file " + xmlFilePath, e);
+			throw ExceptionFactory.createException(RuntimeException.class, MessageCodes.ERR_CANNOT_FIND_FILE, e, logger,
+					Level.ERROR, xmlFilePath);
 		}
 
 		validateXMLSchema(xmlFilePath, xsdPath);
@@ -69,11 +72,11 @@ public final class ChecksCreatorUtils {
 		try {
 			result = digester.parse(inputStream);
 		} catch (IOException e) {
-			logger.error("Input/outpur error while parsing xml file " + xmlFilePath);
-			throw new RuntimeException("Input/outpur error while parsing xml file " + xmlFilePath, e);
+			throw ExceptionFactory.createException(RuntimeException.class, MessageCodes.ERR_INP_OUT_WHILE_PARSING_XML,
+					e, logger, Level.ERROR, xmlFilePath);
 		} catch (SAXException e) {
-			logger.error("Error while parsing xml file " + xmlFilePath);
-			throw new RuntimeException("Error while parsing xml file " + xmlFilePath, e);
+			throw ExceptionFactory.createException(RuntimeException.class, MessageCodes.ERR_WHILE_PARSING_XML, e,
+					logger, Level.ERROR, xmlFilePath);
 		}
 
 		return result;
@@ -92,8 +95,8 @@ public final class ChecksCreatorUtils {
 		try {
 			inputStream = new FileInputStream(xmlFilePath);
 		} catch (FileNotFoundException e) {
-			logger.error("Cannot find file " + xmlFilePath);
-			throw new RuntimeException("Cannot find file " + xmlFilePath, e);
+			throw ExceptionFactory.createException(RuntimeException.class, MessageCodes.ERR_CANNOT_FIND_FILE, e, logger,
+					Level.ERROR, xmlFilePath);
 		}
 
 		validateXMLSchema(xmlFilePath, xsdPath);
@@ -103,11 +106,11 @@ public final class ChecksCreatorUtils {
 		try {
 			result = digester.parse(inputStream);
 		} catch (IOException e) {
-			logger.error("Input/outpur error while parsing xml file " + xmlFilePath);
-			throw new RuntimeException("Input/outpur error while parsing xml file " + xmlFilePath, e);
+			throw ExceptionFactory.createException(RuntimeException.class, MessageCodes.ERR_INP_OUT_WHILE_PARSING_XML,
+					e, logger, Level.ERROR, xmlFilePath);
 		} catch (SAXException e) {
-			logger.error("Error while parsing xml file " + xmlFilePath);
-			throw new RuntimeException("Error while parsing xml file " + xmlFilePath, e);
+			throw ExceptionFactory.createException(RuntimeException.class, MessageCodes.ERR_WHILE_PARSING_XML, e,
+					logger, Level.ERROR, xmlFilePath);
 		}
 
 		return result;
@@ -134,8 +137,8 @@ public final class ChecksCreatorUtils {
 			parser = builderFactory.newDocumentBuilder();
 
 		} catch (ParserConfigurationException e) {
-			logger.error("Something went wrong while loading xsd file " + xsdPath + "from the root of the jar file");
-			throw new RuntimeException("Something went wrong while loading xsd file ", e);
+			throw ExceptionFactory.createException(RuntimeException.class, MessageCodes.ERR_WHILE_LOADING_XSD, e,
+					logger, Level.ERROR, xsdPath);
 		}
 
 		// parse the XML into a document object
@@ -144,16 +147,16 @@ public final class ChecksCreatorUtils {
 		try {
 			xmlFileInput = new FileInputStream(xmlFile);
 		} catch (FileNotFoundException e) {
-			logger.error("XML file " + xmlPath + " not found");
-			throw new IllegalArgumentException("XML file " + xmlPath + " not found", e);
+			throw ExceptionFactory.createException(IllegalArgumentException.class, MessageCodes.ERR_CANNOT_FIND_FILE, e,
+					logger, Level.ERROR, xmlPath);
 		}
 
 		try {
 			document = parser.parse(xmlFileInput);
 		} catch (SAXException | IOException e) {
-			logger.error("Something went wrong while parsing XML file " + xmlPath + " to DOM object");
-			throw new IllegalArgumentException(
-					"Something went wrong while parsing XML file " + xmlPath + " to DOM object", e);
+
+			throw ExceptionFactory.createException(IllegalArgumentException.class,
+					MessageCodes.ERR_WHILE_LOADING_PARSING_XML_TO_DOM, e, logger, Level.ERROR, xmlPath);
 		}
 
 		// associate the schema factory with the resource resolver, which is
@@ -166,8 +169,8 @@ public final class ChecksCreatorUtils {
 		try {
 			schema = factory.newSchema(schemaFile);
 		} catch (SAXException e) {
-			logger.error("Something went wrong while parsing XSD file " + xsdPath);
-			throw new IllegalArgumentException("Something went wrong while parsing XSD file " + xsdPath, e);
+			throw ExceptionFactory.createException(IllegalArgumentException.class,
+					MessageCodes.ERR_WHILE_LOADING_PARSING_XSD, e, logger, Level.ERROR, xsdPath);
 
 		}
 
@@ -176,9 +179,8 @@ public final class ChecksCreatorUtils {
 		try {
 			validator.validate(new DOMSource(document));
 		} catch (SAXException | IOException e) {
-			logger.error("Error while validating file: " + xmlPath + " with " + xsdPath);
-			throw new RuntimeException(
-					"Something went wrong while validating XML " + xmlPath + " with XSD file " + xsdPath, e);
+			throw ExceptionFactory.createException(RuntimeException.class,
+					MessageCodes.ERR_WHILE_VALIDATING_XML_WITH_XSD, e, logger, Level.ERROR, xmlPath, xsdPath);
 		}
 
 	}

@@ -6,7 +6,9 @@ import org.apache.logging.log4j.Logger;
 import com.dbquality.checks.xml.ChecksCreatorUtils;
 import com.dbquality.consts.AppConsts;
 import com.dbquality.custom.checks.elements.CustomRootElement;
+import com.dbquality.properties.ApplicationMessagesHolder;
 import com.dbquality.properties.ApplicationPropertiesHolder;
+import com.dbquality.properties.MessageCodes;
 
 /**
  * Singleton class which acts as a holder for the xml file of distinct checks
@@ -41,8 +43,8 @@ public final class CustomXMLHolder {
 		String xmlDistinct = ApplicationPropertiesHolder.getInstance().getProperties()
 				.getProperty(AppConsts.PROPS_CHECKS_CUSTOM_XML_LOCATION);
 
-		System.out.println("Started loading " + xmlDistinct);
-		logger.info("Started loading " + xmlDistinct);
+		logger.info(
+				ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.MSG_FILE_STARTED_LOADING, xmlDistinct));
 		customElement = ChecksCreatorUtils.loadCustomChecks(xmlDistinct, AppConsts.CUSTOM_XSD_LOCATION);
 
 	}
