@@ -3,11 +3,14 @@ package com.dbquality.sql;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.dbquality.consts.AppConsts;
 import com.dbquality.distinct.checks.sql.DistinctSQLExecutionHandler;
+import com.dbquality.exceptions.ExceptionFactory;
+import com.dbquality.properties.MessageCodes;
 
 public enum DatabaseEnum {
 	TERADATA("teradata"), MYSQL("mysql");
@@ -34,9 +37,9 @@ public enum DatabaseEnum {
 
 	public static DatabaseEnum toEnum(String database) {
 		if (!databases.containsKey(database)) {
-			logger.error("The database provided in the " + AppConsts.PROPERTIES_FILE_NAME + "file is wrong");
-			throw new IllegalArgumentException(
-					"The database provided in the " + AppConsts.PROPERTIES_FILE_NAME + "file is wrong");
+			throw ExceptionFactory.createException(IllegalArgumentException.class,
+					MessageCodes.ERR_WRONG_DATABASE_IN_PROPERTIES_FILE, null, logger, Level.ERROR,
+					AppConsts.PROPERTIES_FILE_NAME);
 		}
 
 		return DatabaseEnum.valueOf(databases.get(database));

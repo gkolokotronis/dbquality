@@ -15,6 +15,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.dbquality.distinct.checks.elements.ColumnDistinctElement;
+import com.dbquality.properties.ApplicationMessagesHolder;
+import com.dbquality.properties.MessageCodes;
 import com.dbquality.utils.TypeUtils;
 
 public class DistinctSQLResultValidator {
@@ -44,19 +46,20 @@ public class DistinctSQLResultValidator {
 				boolean found = validateValidValues(column, valueOfColumn);
 
 				if (!found && StringUtils.isNotEmpty(valueOfColumn)) {
-					logger.error("Error on " + column.getId() + "\n\tValue found: " + valueOfColumn
-							+ " \n\tExpecting one of " + distinctValues + "\n");
+					logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_WRONG_VALID_VALUE,
+							column.getId(), valueOfColumn, distinctValues.toString()));
 
 				} else if (!found && !column.isNullable() && StringUtils.isEmpty(valueOfColumn)) {
-					logger.error("Error on " + column.getId() + "\n\tNull value found!\n\tExpecting one of "
-							+ distinctValues + "\n");
-
+					logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NULL_VALUE_FOUND,
+							column.getId(), distinctValues.toString()));
 				}
 
 			}
 
 		} else {
-			logger.error("No rows found in " + column.getDatabaseName() + "." + column.getTableName());
+			logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NO_ROWS_FOUND,
+					column.getDatabaseName(), column.getTableName()));
+
 		}
 
 		return true;
@@ -85,9 +88,9 @@ public class DistinctSQLResultValidator {
 			switch (column.getType()) {
 			case DATE:
 				if (!TypeUtils.validateDate(valueOfColumn, column.getDateFormat())) {
-					logger.error("ERROR - Cannot parse value " + valueOfColumn + " as DATE with dateformat: "
-							+ column.getDateFormat() + " . Found in column: " + column.getName() + " table: "
-							+ column.getTableName() + " database: " + column.getDatabaseName());
+					logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NOT_VALID_DATE,
+							valueOfColumn, column.getDateFormat(), column.getName(), column.getTableName(),
+							column.getDatabaseName()));
 				} else {
 					DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -102,7 +105,8 @@ public class DistinctSQLResultValidator {
 						// validated. XML valid value were validated on the
 						// loading of the xml and value of the column was
 						// validated on the previous step
-						logger.error("Something went wrong while validating if both dates have the same value");
+						logger.error(ApplicationMessagesHolder.getInstance()
+								.getMessage(MessageCodes.ERR_VALIDATING_BOTH_DATES));
 						return false;
 					}
 				}
@@ -116,9 +120,8 @@ public class DistinctSQLResultValidator {
 						return true;
 					}
 				} catch (NumberFormatException e) {
-					logger.error("ERROR - Cannot parse value " + valueOfColumn + " as DECIMAL. Found in column: "
-							+ column.getName() + " table: " + column.getTableName() + " database: "
-							+ column.getDatabaseName());
+					logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NOT_VALID_DECIMAL,
+							valueOfColumn, column.getName(), column.getTableName(), column.getDatabaseName()));
 					return false;
 
 				}
@@ -130,9 +133,8 @@ public class DistinctSQLResultValidator {
 						return true;
 					}
 				} catch (NumberFormatException e) {
-					logger.error("ERROR - Cannot parse value " + valueOfColumn + " as INTEGER. Found in column: "
-							+ column.getName() + " table: " + column.getTableName() + " database: "
-							+ column.getDatabaseName());
+					logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NOT_VALID_INTEGER,
+							valueOfColumn, column.getName(), column.getTableName(), column.getDatabaseName()));
 					return false;
 
 				}

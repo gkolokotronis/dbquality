@@ -4,11 +4,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.dbquality.consts.AppConsts;
+import com.dbquality.exceptions.ExceptionFactory;
+import com.dbquality.properties.ApplicationMessagesHolder;
 import com.dbquality.properties.ApplicationPropertiesHolder;
+import com.dbquality.properties.MessageCodes;
 
 /**
  * 
@@ -78,7 +82,8 @@ public abstract class SQLExecutionHandler {
 		String url = ApplicationPropertiesHolder.getInstance().getProperties()
 				.getProperty(AppConsts.PROPS_TERADATA_DATABASE_URL);
 
-		logger.info("Connecting to database " + url);
+		logger.info(
+				ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.MSG_DB_CONNECTING_TO_DATABASE, url));
 
 		Connection conn = null;
 
@@ -86,11 +91,13 @@ public abstract class SQLExecutionHandler {
 			Class.forName(AppConsts.TERADATA_JDBC_DRIVER);
 			conn = DriverManager.getConnection(url, userName, password);
 		} catch (SQLException e) {
-			logger.error("Cannot connect to the database: " + url);
-			throw new IllegalStateException("Cannot connect to the database", e);
+			throw ExceptionFactory.createException(IllegalStateException.class,
+					MessageCodes.ERR_DB_CANNOT_CONNECT_TO_DATABASE, e, logger, Level.ERROR, url);
+
 		} catch (ClassNotFoundException e) {
-			logger.error("Cannot find driver " + AppConsts.TERADATA_JDBC_DRIVER + " in the classpath");
-			throw new IllegalStateException("Cannot find the driver in the classpath!", e);
+			throw ExceptionFactory.createException(IllegalStateException.class,
+					MessageCodes.ERR_DB_CANNOT_FIND_DRIVER_IN_CLASSPATH, e, logger, Level.ERROR,
+					AppConsts.TERADATA_JDBC_DRIVER);
 		}
 
 		return conn;
@@ -110,7 +117,8 @@ public abstract class SQLExecutionHandler {
 		String url = ApplicationPropertiesHolder.getInstance().getProperties()
 				.getProperty(AppConsts.PROPS_MYSQL_DATABASE_URL);
 
-		logger.info("Connecting to database " + url);
+		logger.info(
+				ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.MSG_DB_CONNECTING_TO_DATABASE, url));
 
 		Connection conn = null;
 
@@ -118,11 +126,12 @@ public abstract class SQLExecutionHandler {
 			Class.forName(AppConsts.MYSQL_JDBC_DRIVER);
 			conn = DriverManager.getConnection(url, userName, password);
 		} catch (SQLException e) {
-			logger.error("Cannot connect to the database: " + url);
-			throw new IllegalStateException("Cannot connect to the database", e);
+			throw ExceptionFactory.createException(IllegalStateException.class,
+					MessageCodes.ERR_DB_CANNOT_CONNECT_TO_DATABASE, e, logger, Level.ERROR, url);
 		} catch (ClassNotFoundException e) {
-			logger.error("Cannot find driver " + AppConsts.MYSQL_JDBC_DRIVER + " in the classpath");
-			throw new IllegalStateException("Cannot find the driver in the classpath!", e);
+			throw ExceptionFactory.createException(IllegalStateException.class,
+					MessageCodes.ERR_DB_CANNOT_FIND_DRIVER_IN_CLASSPATH, e, logger, Level.ERROR,
+					AppConsts.TERADATA_JDBC_DRIVER);
 		}
 
 		return conn;

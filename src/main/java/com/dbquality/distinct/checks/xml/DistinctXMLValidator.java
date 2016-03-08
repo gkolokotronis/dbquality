@@ -10,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.dbquality.checks.ColumnTypeEnum;
 import com.dbquality.distinct.checks.elements.ColumnDistinctElement;
+import com.dbquality.properties.ApplicationMessagesHolder;
+import com.dbquality.properties.MessageCodes;
 import com.dbquality.utils.TypeUtils;
 
 /**
@@ -65,8 +67,9 @@ public class DistinctXMLValidator {
 			if (StringUtils.isNotEmpty(column.getDateFormat())) {
 				return true;
 			}
-			logger.error("Column with id " + column.getId() + " is of type " + column.getType()
-					+ " but has no value for element <dateFormat>");
+			logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_DATE_WITHOUT_DATE_FORMAT,
+					column.getId(), column.getType()));
+
 			return false;
 		} else {
 			return true;
@@ -88,8 +91,8 @@ public class DistinctXMLValidator {
 		ColumnDistinctElement returnColumn = columnElements.put(key, column);
 
 		if (returnColumn != null) {
-			logger.error("Found two distinct checks with the same id number. Please check your file for duplicate id "
-					+ key);
+			logger.error(
+					ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_DISTINCT_CHECKS_SAME_ID, key));
 			return false;
 		}
 		return true;
@@ -129,7 +132,7 @@ public class DistinctXMLValidator {
 		case VARCHAR:
 			break;
 		default:
-			logger.error("Unexpected value on type of column");
+			logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_UNEXPECTED_VALUE_OF_TYPE));
 			return false;
 
 		}
@@ -148,9 +151,9 @@ public class DistinctXMLValidator {
 		for (String value : column.getValues()) {
 
 			if (!TypeUtils.validateDate(value, column.getDateFormat())) {
-				logger.error("Cannot parse date value: " + value
-						+ " using format yyyy-MM-dd as DATE. Found in XML under: Database: " + column.getDatabaseName()
-						+ " table: " + column.getTableName() + " column: " + column.getName());
+
+				logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NOT_VALID_DATE, value,
+						column.getDateFormat(), column.getName(), column.getTableName(), column.getDatabaseName()));
 
 				return false;
 			}
@@ -169,8 +172,9 @@ public class DistinctXMLValidator {
 		for (String value : column.getValues()) {
 
 			if (!TypeUtils.validateInteger(value)) {
-				logger.error("Cannot parse integer value: " + value + " Found in database: " + column.getDatabaseName()
-						+ " table: " + column.getTableName() + " column: " + column.getName());
+
+				logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NOT_VALID_INTEGER,
+						value, column.getName(), column.getTableName(), column.getDatabaseName()));
 				return false;
 			}
 		}
@@ -188,8 +192,8 @@ public class DistinctXMLValidator {
 		for (String value : column.getValues()) {
 
 			if (!TypeUtils.validateDecimal(value)) {
-				logger.error("Cannot parse double value: " + value + " Found in database: " + column.getDatabaseName()
-						+ " table: " + column.getTableName() + " column: " + column.getName());
+				logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NOT_VALID_DECIMAL,
+						value, column.getName(), column.getTableName(), column.getDatabaseName()));
 				return false;
 			}
 		}

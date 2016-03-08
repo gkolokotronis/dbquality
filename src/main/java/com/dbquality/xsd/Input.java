@@ -5,9 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.ls.LSInput;
 
 public class Input implements LSInput {
+
+	private final static Logger logger = LogManager.getLogger(Input.class);
 
 	private String publicId;
 
@@ -49,8 +53,8 @@ public class Input implements LSInput {
 				String contents = new String(input);
 				return contents;
 			} catch (IOException e) {
-				e.printStackTrace();
-				System.out.println("Exception " + e);
+				logger.error("Exception" + e);
+
 				return null;
 			}
 		}
