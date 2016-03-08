@@ -7,6 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.dbquality.custom.checks.elements.CustomCheckElement;
+import com.dbquality.properties.ApplicationMessagesHolder;
+import com.dbquality.properties.MessageCodes;
 
 public class CustomSQLResultValidator {
 
@@ -27,15 +29,17 @@ public class CustomSQLResultValidator {
 				Integer valueOfCount = rs.getInt(1);
 
 				if (!validateResult(valueOfCount)) {
-					logger.error("Error on " + checkToValidate.getCheckName() + "\n\tThe value: " + valueOfCount
-							+ " \n\tneeds to be " + getCheckToValidate().getExpectedCountCheck() + " "
-							+ getCheckToValidate().getExpectedCount() + " \n");
+					logger.error(ApplicationMessagesHolder.getInstance().getMessage(
+							MessageCodes.ERR_WRONG_EXPECTED_COUNT, checkToValidate.getCheckName(), valueOfCount,
+							getCheckToValidate().getExpectedCountCheck(), getCheckToValidate().getExpectedCount()));
 
 				}
 			}
 
 		} else {
-			logger.error("Something went wrong with the result of " + checkToValidate.getCheckName());
+			logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_WRONG_RESULT_CHECK,
+					checkToValidate.getCheckName()));
+
 		}
 
 		return true;

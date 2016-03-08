@@ -147,4 +147,72 @@ public class MessageCodes {
 	 */
 	public static final int ERR_WHILE_VALIDATING_RESULTS = -1014;
 
+	/**
+	 * Error on {0}, the value: {1} needs to be {2} {3}
+	 */
+	public static final int ERR_WRONG_EXPECTED_COUNT = -1015;
+
+	/**
+	 * Something went wrong with the result of check: {0}
+	 */
+	public static final int ERR_WRONG_RESULT_CHECK = -1016;
+
+	/**
+	 * Something went wrong while executing {0}. Error: {1}
+	 */
+	public static final int ERR_WRONG_EXECUTING_SQL = -1017;
+
+	/**
+	 * Error on {0} Value found: {1}. Expecting one of {2}
+	 */
+	public static final int ERR_WRONG_VALID_VALUE = -1018;
+
+	/**
+	 * Error on {0}. Null value found. Expecting one of: {1}
+	 */
+	public static final int ERR_NULL_VALUE_FOUND = -1019;
+	/**
+	 * No rows found in {0}.{1}
+	 */
+	public static final int ERR_NO_ROWS_FOUND = -1020;
+
+	/**
+	 * Cannot parse value {0} as DATE with dateformat: {1} Found in column: {2}
+	 * Table: {3} Database: {4}
+	 */
+	public static final int ERR_NOT_VALID_DATE = -1021;
+
+	/**
+	 * Something went wrong while validating if both dates have the same value
+	 */
+	public static final int ERR_VALIDATING_BOTH_DATES = -1022;
+
+	/**
+	 * Cannot parse value {0} as DECIMAL. Found in column: {1} Table: {2}
+	 * Database: {3}
+	 */
+	public static final int ERR_NOT_VALID_DECIMAL = -1023;
+
+	/**
+	 * Cannot parse value {0} as INTEGER. Found in column: {1} Table: {2}
+	 * Database: {4}
+	 */
+	public static final int ERR_NOT_VALID_INTEGER = -1024;
+
+	/**
+	 * Column with id {0} is of type {1} but has no value for element
+	 * <dateFormat>.
+	 */
+	public static final int ERR_DATE_WITHOUT_DATE_FORMAT = -1025;
+
+	/**
+	 * Found two distinct checks with the same id number. Please check your file
+	 * for duplicate id {0}
+	 */
+	public static final int ERR_DISTINCT_CHECKS_SAME_ID = -1026;
+
+	/**
+	 * Unexpected value on type of column
+	 */
+	public static final int ERR_UNEXPECTED_VALUE_OF_TYPE = -1027;
 }
