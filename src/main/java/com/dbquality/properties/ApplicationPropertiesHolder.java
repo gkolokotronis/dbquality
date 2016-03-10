@@ -7,15 +7,14 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.dbquality.consts.AppConsts;
 import com.dbquality.exceptions.ExceptionFactory;
+import com.dbquality.logs.DQLogger;
 
 public final class ApplicationPropertiesHolder {
 
-	private static final Logger logger = LogManager.getLogger(ApplicationPropertiesHolder.class);
+	private static final DQLogger logger = DQLogger.create(ApplicationPropertiesHolder.class);
 
 	private static final ApplicationPropertiesHolder SINGLETON = new ApplicationPropertiesHolder();
 

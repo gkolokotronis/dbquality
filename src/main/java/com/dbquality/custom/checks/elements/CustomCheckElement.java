@@ -1,8 +1,12 @@
 package com.dbquality.custom.checks.elements;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Level;
 
 import com.dbquality.custom.checks.enums.ExpectedCountCheckEnum;
+import com.dbquality.exceptions.ExceptionFactory;
+import com.dbquality.logs.DQLogger;
+import com.dbquality.properties.MessageCodes;
 
 /**
  * Represents <code>custom/check</code> element of the xml containg the checks,
@@ -12,6 +16,8 @@ import com.dbquality.custom.checks.enums.ExpectedCountCheckEnum;
  *
  */
 public class CustomCheckElement {
+	private static final DQLogger logger = DQLogger.create(CustomCheckElement.class);
+
 	private String checkName;
 	private String tableName;
 	private String databaseName;
@@ -117,7 +123,9 @@ public class CustomCheckElement {
 		} else if (StringUtils.equals(type, ExpectedCountCheckEnum.LESS_THAN_OR_EQUAL_TO.toString())) {
 			this.expectedCountCheck = ExpectedCountCheckEnum.LESS_THAN_OR_EQUAL_TO;
 		} else {
-			throw new RuntimeException("Invalid column type " + type);
+			throw ExceptionFactory.createException(RuntimeException.class,
+					MessageCodes.ERR_INVALID_EXPECTED_COUNT_CHECK, null, logger, Level.ERROR, type,
+					ExpectedCountCheckEnum.values());
 		}
 	}
 

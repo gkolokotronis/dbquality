@@ -4,18 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.dbquality.consts.AppConsts;
-import com.dbquality.distinct.checks.sql.DistinctSQLExecutionHandler;
 import com.dbquality.exceptions.ExceptionFactory;
+import com.dbquality.logs.DQLogger;
 import com.dbquality.properties.MessageCodes;
 
 public enum DatabaseEnum {
 	TERADATA("teradata"), MYSQL("mysql");
 
-	private static final Logger logger = LogManager.getLogger(DistinctSQLExecutionHandler.class);
+	private static final DQLogger logger = DQLogger.create(DatabaseEnum.class);
 
 	private final String database;
 

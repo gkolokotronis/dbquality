@@ -142,18 +142,18 @@ public class MessageCodes {
 	public static final int ERR_WHILE_READING_PROPERTY_FILE = -1013;
 
 	/**
-	 * A database error has occurred while validating results for {0}. Error:
-	 * {1}
+	 * A database error has occurred while validating results for {0} check {1}.
+	 * Error: {2}
 	 */
 	public static final int ERR_WHILE_VALIDATING_RESULTS = -1014;
 
 	/**
-	 * Error on {0}, the value: {1} needs to be {2} {3}
+	 * Error on {0} check {1}, the value: {2} needs to be {3} {4}
 	 */
 	public static final int ERR_WRONG_EXPECTED_COUNT = -1015;
 
 	/**
-	 * Something went wrong with the result of check: {0}
+	 * Something went wrong with the result of {0} check: {1}
 	 */
 	public static final int ERR_WRONG_RESULT_CHECK = -1016;
 
@@ -163,16 +163,16 @@ public class MessageCodes {
 	public static final int ERR_WRONG_EXECUTING_SQL = -1017;
 
 	/**
-	 * Error on {0} Value found: {1}. Expecting one of {2}
+	 * Error on {0} check {1} Value found: {2} but expecting one of {3}
 	 */
 	public static final int ERR_WRONG_VALID_VALUE = -1018;
 
 	/**
-	 * Error on {0}. Null value found. Expecting one of: {1}
+	 * Error on {0} check {1}. Null value found. Expecting one of: {2}
 	 */
 	public static final int ERR_NULL_VALUE_FOUND = -1019;
 	/**
-	 * No rows found in {0}.{1}
+	 * Error on {No rows found in {0}.{1}
 	 */
 	public static final int ERR_NO_ROWS_FOUND = -1020;
 
@@ -215,4 +215,35 @@ public class MessageCodes {
 	 * Unexpected value on type of column
 	 */
 	public static final int ERR_UNEXPECTED_VALUE_OF_TYPE = -1027;
+
+	/**
+	 * {0} is not a valid check type. Available check types are {1}
+	 */
+	public static final int ERR_WRONG_CHECK_TYPE_PROVIDED = -1028;
+
+	/**
+	 * Found two {0} checks with the same {1}: {2}. Please check your file.
+	 */
+	public static final int ERR_DUPLICATE_CHECKS = -1029;
+
+	/**
+	 * Resource Bundle: {0} is missing
+	 */
+	public static final int ERR_MISSING_BUNDLE = -1030;
+
+	/**
+	 * The column type: {0} is invalid
+	 */
+	public static final int ERR_INVALID_COLUMN_TYPE = -1031;
+
+	/**
+	 * Something went wrong while validating {0} checks. Please check the log
+	 * before this error for more info
+	 */
+	public static final int ERR_INVALID_CHECKS = -1032;
+
+	/**
+	 * The value {0} for expectedCountCheck is not valid. Valid values are: {1}
+	 */
+	public static final int ERR_INVALID_EXPECTED_COUNT_CHECK = -1033;
 }

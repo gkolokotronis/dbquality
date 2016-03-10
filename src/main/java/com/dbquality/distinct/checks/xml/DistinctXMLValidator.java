@@ -5,11 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.dbquality.checks.ColumnTypeEnum;
 import com.dbquality.distinct.checks.elements.ColumnDistinctElement;
+import com.dbquality.logs.DQLogger;
 import com.dbquality.properties.ApplicationMessagesHolder;
 import com.dbquality.properties.MessageCodes;
 import com.dbquality.utils.TypeUtils;
@@ -22,7 +21,7 @@ import com.dbquality.utils.TypeUtils;
  */
 public class DistinctXMLValidator {
 
-	private static final Logger logger = LogManager.getLogger(DistinctXMLValidator.class);
+	private static final DQLogger logger = DQLogger.create(DistinctXMLValidator.class);
 
 	private List<ColumnDistinctElement> columns;
 

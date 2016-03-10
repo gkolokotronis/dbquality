@@ -11,17 +11,17 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
+import com.dbquality.checks.CheckTypeEnum;
 import com.dbquality.distinct.checks.elements.ColumnDistinctElement;
+import com.dbquality.logs.DQLogger;
 import com.dbquality.properties.ApplicationMessagesHolder;
 import com.dbquality.properties.MessageCodes;
 import com.dbquality.utils.TypeUtils;
 
 public class DistinctSQLResultValidator {
 
-	private static final Logger logger = LogManager.getLogger(DistinctSQLResultValidator.class);
+	private static final DQLogger logger = DQLogger.create(DistinctSQLResultValidator.class);
 
 	private ResultSet rs;
 	private ColumnDistinctElement columnToValidate;
@@ -46,12 +46,14 @@ public class DistinctSQLResultValidator {
 				boolean found = validateValidValues(column, valueOfColumn);
 
 				if (!found && StringUtils.isNotEmpty(valueOfColumn)) {
-					logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_WRONG_VALID_VALUE,
-							column.getId(), valueOfColumn, distinctValues.toString()));
+					logger.validationError(ApplicationMessagesHolder.getInstance().getMessage(
+							MessageCodes.ERR_WRONG_VALID_VALUE, CheckTypeEnum.DISTINCT.toString(), column.getId(),
+							valueOfColumn, distinctValues.toString()));
 
 				} else if (!found && !column.isNullable() && StringUtils.isEmpty(valueOfColumn)) {
-					logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NULL_VALUE_FOUND,
-							column.getId(), distinctValues.toString()));
+					logger.validationError(
+							ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NULL_VALUE_FOUND,
+									CheckTypeEnum.DISTINCT, column.getId(), distinctValues.toString()));
 				}
 
 			}

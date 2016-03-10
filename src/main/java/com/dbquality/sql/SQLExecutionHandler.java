@@ -5,11 +5,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.dbquality.consts.AppConsts;
 import com.dbquality.exceptions.ExceptionFactory;
+import com.dbquality.logs.DQLogger;
 import com.dbquality.properties.ApplicationMessagesHolder;
 import com.dbquality.properties.ApplicationPropertiesHolder;
 import com.dbquality.properties.MessageCodes;
@@ -24,7 +23,7 @@ import com.dbquality.properties.MessageCodes;
  */
 public abstract class SQLExecutionHandler {
 
-	private static final Logger logger = LogManager.getLogger(SQLExecutionHandler.class);
+	private static final DQLogger logger = DQLogger.create(SQLExecutionHandler.class);
 
 	public final void execute() {
 

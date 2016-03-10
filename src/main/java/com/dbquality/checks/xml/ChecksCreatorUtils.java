@@ -20,8 +20,6 @@ import javax.xml.validation.Validator;
 import org.apache.commons.digester3.Digester;
 import org.apache.commons.digester3.binder.DigesterLoader;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -30,6 +28,7 @@ import com.dbquality.custom.checks.xml.CustomModule;
 import com.dbquality.distinct.checks.elements.DistinctRootElement;
 import com.dbquality.distinct.checks.xml.DistinctModule;
 import com.dbquality.exceptions.ExceptionFactory;
+import com.dbquality.logs.DQLogger;
 import com.dbquality.properties.MessageCodes;
 import com.dbquality.xsd.ResourceResolver;
 
@@ -42,7 +41,7 @@ import com.dbquality.xsd.ResourceResolver;
  */
 public final class ChecksCreatorUtils {
 
-	private static final Logger logger = LogManager.getLogger(ChecksCreatorUtils.class);
+	private static final DQLogger logger = DQLogger.create(ChecksCreatorUtils.class);
 
 	private ChecksCreatorUtils() {
 		// to avoid instantiation
