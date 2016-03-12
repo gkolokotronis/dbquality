@@ -10,11 +10,11 @@ import java.util.Map;
 
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
+import com.dbquality.checks.CheckTypeEnum;
 import com.dbquality.distinct.checks.elements.ColumnDistinctElement;
 import com.dbquality.distinct.checks.elements.DistinctRootElement;
+import com.dbquality.logs.DQLogger;
 import com.dbquality.properties.ApplicationMessagesHolder;
 import com.dbquality.properties.MessageCodes;
 import com.dbquality.sql.SQLExecutionHandler;
@@ -29,7 +29,7 @@ import com.dbquality.sql.SQLExecutionHandler;
  */
 public class DistinctSQLExecutionHandler extends SQLExecutionHandler {
 
-	private static final Logger logger = LogManager.getLogger(DistinctSQLExecutionHandler.class);
+	private static final DQLogger logger = DQLogger.create(DistinctSQLExecutionHandler.class);
 
 	private DistinctRootElement rootElement;
 
@@ -132,7 +132,7 @@ public class DistinctSQLExecutionHandler extends SQLExecutionHandler {
 			resultValidator.validate();
 		} catch (SQLException e) {
 			logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_WHILE_VALIDATING_RESULTS,
-					key, e.getMessage()));
+					CheckTypeEnum.DISTINCT, key, e.getMessage()));
 		}
 
 	}

@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Level;
 
 import com.dbquality.checks.ColumnTypeEnum;
+import com.dbquality.exceptions.ExceptionFactory;
+import com.dbquality.logs.DQLogger;
+import com.dbquality.properties.MessageCodes;
 
 /**
  * Represents <code>distinct/column</code> element of the xml containg the
@@ -16,6 +20,8 @@ import com.dbquality.checks.ColumnTypeEnum;
  *
  */
 public class ColumnDistinctElement {
+
+	private static final DQLogger logger = DQLogger.create(ColumnDistinctElement.class);
 
 	private Integer id;
 	private String name;
@@ -120,7 +126,8 @@ public class ColumnDistinctElement {
 		} else if (StringUtils.equals(type, ColumnTypeEnum.DATE.toString())) {
 			this.type = ColumnTypeEnum.DATE;
 		} else {
-			throw new RuntimeException("Invalid column type " + type);
+			throw ExceptionFactory.createException(RuntimeException.class, MessageCodes.ERR_INVALID_COLUMN_TYPE, null,
+					logger, Level.ERROR, type);
 		}
 	}
 

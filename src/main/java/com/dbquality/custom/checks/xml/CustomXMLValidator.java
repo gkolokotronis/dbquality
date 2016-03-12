@@ -5,10 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import com.dbquality.checks.CheckTypeEnum;
+import com.dbquality.consts.AppConsts;
 import com.dbquality.custom.checks.elements.CustomCheckElement;
+import com.dbquality.logs.DQLogger;
+import com.dbquality.properties.ApplicationMessagesHolder;
+import com.dbquality.properties.ApplicationPropertiesHolder;
+import com.dbquality.properties.MessageCodes;
 
 /**
  * Validator class holding validations related to custom checks
@@ -18,7 +21,7 @@ import com.dbquality.custom.checks.elements.CustomCheckElement;
  */
 public class CustomXMLValidator {
 
-	private static final Logger logger = LogManager.getLogger(CustomXMLValidator.class);
+	private static final DQLogger logger = DQLogger.create(CustomXMLValidator.class);
 
 	private List<CustomCheckElement> checks = new ArrayList<CustomCheckElement>();
 
@@ -56,8 +59,9 @@ public class CustomXMLValidator {
 		CustomCheckElement returnCheck = getCheckElements().put(name, check);
 
 		if (returnCheck != null) {
-			logger.error(
-					"Found two custom checks with the same name. Please check your file for duplicate name: " + name);
+			logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_DUPLICATE_CHECKS,
+					CheckTypeEnum.CUSTOM, AppConsts.NAME, name, ApplicationPropertiesHolder.getInstance()
+							.getProperties().get(AppConsts.PROPS_CHECKS_CUSTOM_XML_LOCATION)));
 			return false;
 		}
 		return true;

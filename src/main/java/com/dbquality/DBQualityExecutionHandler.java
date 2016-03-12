@@ -3,8 +3,6 @@ package com.dbquality;
 import java.io.File;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.dbquality.consts.AppConsts;
 import com.dbquality.custom.checks.elements.CustomRootElement;
@@ -14,6 +12,7 @@ import com.dbquality.distinct.checks.elements.DistinctRootElement;
 import com.dbquality.distinct.checks.sql.DistinctSQLExecutionHandler;
 import com.dbquality.distinct.checks.xml.DistinctXMLHolder;
 import com.dbquality.exceptions.ExceptionFactory;
+import com.dbquality.logs.DQLogger;
 import com.dbquality.properties.ApplicationMessagesHolder;
 import com.dbquality.properties.ApplicationPropertiesHolder;
 import com.dbquality.properties.MessageCodes;
@@ -26,7 +25,7 @@ import com.dbquality.properties.MessageCodes;
  */
 public class DBQualityExecutionHandler {
 
-	private static final Logger logger = LogManager.getLogger(DBQualityExecutionHandler.class);
+	private static final DQLogger logger = DQLogger.create(DBQualityExecutionHandler.class);
 
 	public boolean runDistinctChecks;
 

@@ -3,16 +3,15 @@ package com.dbquality.custom.checks.sql;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import com.dbquality.checks.CheckTypeEnum;
 import com.dbquality.custom.checks.elements.CustomCheckElement;
+import com.dbquality.logs.DQLogger;
 import com.dbquality.properties.ApplicationMessagesHolder;
 import com.dbquality.properties.MessageCodes;
 
 public class CustomSQLResultValidator {
 
-	private static final Logger logger = LogManager.getLogger(CustomSQLResultValidator.class);
+	private static final DQLogger logger = DQLogger.create(CustomSQLResultValidator.class);
 
 	private ResultSet rs;
 	private CustomCheckElement checkToValidate;
@@ -29,16 +28,17 @@ public class CustomSQLResultValidator {
 				Integer valueOfCount = rs.getInt(1);
 
 				if (!validateResult(valueOfCount)) {
-					logger.error(ApplicationMessagesHolder.getInstance().getMessage(
-							MessageCodes.ERR_WRONG_EXPECTED_COUNT, checkToValidate.getCheckName(), valueOfCount,
-							getCheckToValidate().getExpectedCountCheck(), getCheckToValidate().getExpectedCount()));
+					logger.validationError(ApplicationMessagesHolder.getInstance().getMessage(
+							MessageCodes.ERR_WRONG_EXPECTED_COUNT, CheckTypeEnum.CUSTOM, checkToValidate.getCheckName(),
+							valueOfCount, getCheckToValidate().getExpectedCountCheck(),
+							getCheckToValidate().getExpectedCount()));
 
 				}
 			}
 
 		} else {
 			logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_WRONG_RESULT_CHECK,
-					checkToValidate.getCheckName()));
+					CheckTypeEnum.CUSTOM, checkToValidate.getCheckName()));
 
 		}
 

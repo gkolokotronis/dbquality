@@ -29,6 +29,10 @@ public final class AppConsts {
 
 	public static String TERADATA_JDBC_DRIVER = "com.teradata.jdbc.TeraDriver";
 
+	public static String NAME = "name";
+
+	public static String ID = "id";
+
 	/**
 	 * PROPERTIES CONSTANSTS
 	 */

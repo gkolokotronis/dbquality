@@ -4,8 +4,10 @@ import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Level;
+
+import com.dbquality.exceptions.ExceptionFactory;
+import com.dbquality.logs.DQLogger;
 
 /**
  * The singleton instance of ApplicationMessagesHolder
@@ -15,7 +17,7 @@ import org.apache.logging.log4j.Logger;
  */
 public final class ApplicationMessagesHolder {
 
-	private final static Logger logger = LogManager.getLogger(ApplicationMessagesHolder.class);
+	private static final DQLogger logger = DQLogger.create(ApplicationMessagesHolder.class);
 
 	private final static ApplicationMessagesHolder SINGLETON = new ApplicationMessagesHolder();
 
@@ -36,9 +38,8 @@ public final class ApplicationMessagesHolder {
 		try {
 			this.resourceMessages = getResourceBundle(BUNDLE_NAME);
 		} catch (MissingResourceException e) {
-			String msg = "Resource Bundle - ApplicationMessages is missing";
-			logger.error(msg);
-			throw new RuntimeException(msg, e);
+			throw ExceptionFactory.createException(RuntimeException.class, MessageCodes.ERR_MISSING_BUNDLE, e, logger,
+					Level.ERROR, BUNDLE_NAME);
 		}
 
 	}

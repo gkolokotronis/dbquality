@@ -1,11 +1,13 @@
 package com.dbquality.distinct.checks.xml;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Level;
 
+import com.dbquality.checks.CheckTypeEnum;
 import com.dbquality.checks.xml.ChecksCreatorUtils;
 import com.dbquality.consts.AppConsts;
 import com.dbquality.distinct.checks.elements.DistinctRootElement;
+import com.dbquality.exceptions.ExceptionFactory;
+import com.dbquality.logs.DQLogger;
 import com.dbquality.properties.ApplicationMessagesHolder;
 import com.dbquality.properties.ApplicationPropertiesHolder;
 import com.dbquality.properties.MessageCodes;
@@ -18,7 +20,7 @@ import com.dbquality.properties.MessageCodes;
  */
 public final class DistinctXMLHolder {
 
-	private static final Logger logger = LogManager.getLogger(DistinctXMLHolder.class);
+	private static final DQLogger logger = DQLogger.create(DistinctXMLHolder.class);
 
 	private static final DistinctXMLHolder SINGLETON = new DistinctXMLHolder();
 
@@ -29,8 +31,8 @@ public final class DistinctXMLHolder {
 		load();
 
 		if (!validate()) {
-			throw new RuntimeException(
-					"Something went wrong while validating distinct checks. Please check the log for more info.");
+			throw ExceptionFactory.createException(RuntimeException.class, MessageCodes.ERR_INVALID_CHECKS,
+					null, logger, Level.ERROR, CheckTypeEnum.DISTINCT);
 		}
 
 	}
