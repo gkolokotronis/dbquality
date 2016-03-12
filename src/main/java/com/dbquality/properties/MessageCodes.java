@@ -148,123 +148,127 @@ public class MessageCodes {
 	public static final int ERR_WHILE_VALIDATING_RESULTS = -1014;
 
 	/**
-	 * Error on {0} check {1}, the value: {2} needs to be {3} {4}
-	 */
-	public static final int ERR_WRONG_EXPECTED_COUNT = -1015;
-
-	/**
 	 * Error on {0} check: {1}. Result of COUNT(*) statement can have only one
 	 * row
 	 */
-	public static final int ERR_WRONG_RESULT_CHECK = -1016;
+	public static final int ERR_WRONG_RESULT_CHECK = -1015;
 
 	/**
 	 * Something went wrong while executing {0}. Error: {1}
 	 */
-	public static final int ERR_WRONG_EXECUTING_SQL = -1017;
-
-	/**
-	 * Error on {0} check {1} Value found: {2} but expecting one of {3}
-	 */
-	public static final int ERR_WRONG_VALID_VALUE = -1018;
-
-	/**
-	 * Error on {0} check {1}. Null value found. Expecting one of: {2}
-	 */
-	public static final int ERR_NULL_VALUE_FOUND = -1019;
+	public static final int ERR_WRONG_EXECUTING_SQL = -1016;
 
 	/**
 	 * Error on {0} check {1}. No rows found in {2}.{3}
 	 */
-	public static final int ERR_NO_ROWS_FOUND = -1020;
+	public static final int ERR_NO_ROWS_FOUND = -1017;
 
 	/**
 	 * Error on {0} check {1}. Cannot parse value {2} as DATE with dateformat:
 	 * {3} Found in file: {4}
 	 */
-	public static final int ERR_NOT_VALID_DATE = -1021;
-
-	/**
-	 * Error on {0} check {1}. Something went wrong while validating if both
-	 * dates have the same value
-	 */
-	public static final int ERR_VALIDATING_BOTH_DATES = -1022;
+	public static final int ERR_NOT_VALID_DATE = -1018;
 
 	/**
 	 * Error on {0} check {1}. Cannot parse value {1} as DECIMAL. Found in file:
 	 * {2}
 	 */
-	public static final int ERR_NOT_VALID_DECIMAL = -1023;
+	public static final int ERR_NOT_VALID_DECIMAL = -1019;
 
 	/**
 	 * Error on {0} check {1}. Cannot parse value {2} as INTEGER. Found in file:
 	 * {3}
 	 */
-	public static final int ERR_NOT_VALID_INTEGER = -1024;
+	public static final int ERR_NOT_VALID_INTEGER = -1020;
 
 	/**
 	 * Error on {0} check {1}. Column {2} is of type DATE but has no value for
 	 * element <dateFormat>.
 	 */
-	public static final int ERR_DATE_WITHOUT_DATE_FORMAT = -1025;
+	public static final int ERR_DATE_WITHOUT_DATE_FORMAT = -1021;
 
 	/**
 	 * Error on {0} check {1}. Unexpected value for type of column
 	 */
-	public static final int ERR_UNEXPECTED_VALUE_OF_TYPE = -1026;
+	public static final int ERR_UNEXPECTED_VALUE_OF_TYPE = -1022;
 
 	/**
 	 * {0} is not a valid check type. Available check types are {1}
 	 */
-	public static final int ERR_WRONG_CHECK_TYPE_PROVIDED = -1027;
+	public static final int ERR_WRONG_CHECK_TYPE_PROVIDED = -1023;
 
 	/**
 	 * Found two {0} checks with the same {1}: {2}. Please check file: {3}
 	 */
-	public static final int ERR_DUPLICATE_CHECKS = -1028;
+	public static final int ERR_DUPLICATE_CHECKS = -1024;
 
 	/**
 	 * Resource Bundle: {0} is missing
 	 */
-	public static final int ERR_MISSING_BUNDLE = -1029;
+	public static final int ERR_MISSING_BUNDLE = -1025;
 
 	/**
 	 * The column type: {0} is invalid
 	 */
-	public static final int ERR_INVALID_COLUMN_TYPE = -1030;
+	public static final int ERR_INVALID_COLUMN_TYPE = -1026;
 
 	/**
 	 * Something went wrong while validating {0} checks. Please check the log
 	 * before this error for more info
 	 */
-	public static final int ERR_INVALID_CHECKS = -1031;
+	public static final int ERR_INVALID_CHECKS = -1027;
 
 	/**
 	 * The value {0} for expectedCountCheck is not valid. Valid values are: {1}
 	 */
-	public static final int ERR_INVALID_EXPECTED_COUNT_CHECK = -1032;
-
-	/**
-	 * Error on {0} check {1}. Cannot parse value {2} as DATE with dateformat:
-	 * {3} Found in column: {4} Table: {5} Database: {6}
-	 */
-	public static final int ERR_RESULT_NOT_VALID_DATE = -1033;
-
-	/**
-	 * Error on {0} check {1}. Cannot parse value {1} as DECIMAL. Found in
-	 * column: {2} Table: {3} Database: {4}
-	 */
-	public static final int ERR_RESULT_NOT_VALID_DECIMAL = -1034;
-
-	/**
-	 * Error on {0} check {1}. Cannot parse value {0} as INTEGER. Found in
-	 * column: {1} Table: {2} Database: {4}
-	 */
-	public static final int ERR_RESULT_NOT_VALID_INTEGER = -1035;
+	public static final int ERR_INVALID_EXPECTED_COUNT_CHECK = -1028;
 
 	/**
 	 * Error on {0} check {1}. The value {2} for expectedCountCheck is not
 	 * valid. Valid values are: {3}
 	 */
-	public static final int ERR_INVALID_EXPECTED_COUNT_CHECK_FOR_CHECK = -1036;
+	public static final int ERR_INVALID_EXPECTED_COUNT_CHECK_FOR_CHECK = -1029;
+
+	// ###########################################################
+	// GENERAL SYSTEM ERROR MESSAGES range 2000-2999)
+	// Note: All constants should start with 'VAL_ERR_'
+	// ###########################################################
+	/**
+	 * Error on {0} check {1}, the value: {2} needs to be {3} {4}
+	 */
+	public static final int VAL_ERR_WRONG_EXPECTED_COUNT = -2000;
+
+	/**
+	 * Error on {0} check {1} Value found: {2} but expecting one of {3}
+	 */
+	public static final int VAL_ERR_WRONG_VALID_VALUE = -2001;
+
+	/**
+	 * Error on {0} check {1}. Null value found. Expecting one of: {2}
+	 */
+	public static final int VAL_ERR_NULL_VALUE_FOUND = -2002;
+
+	/**
+	 * Error on {0} check {1}. Something went wrong while validating if both
+	 * dates have the same value
+	 */
+	public static final int VAL_ERR_VALIDATING_BOTH_DATES = -2003;
+
+	/**
+	 * Error on {0} check {1}. Cannot parse value {2} as DATE with dateformat:
+	 * {3} Found in column: {4} Table: {5} Database: {6}
+	 */
+	public static final int VAL_ERR_RESULT_NOT_VALID_DATE = -2004;
+
+	/**
+	 * Error on {0} check {1}. Cannot parse value {1} as DECIMAL. Found in
+	 * column: {2} Table: {3} Database: {4}
+	 */
+	public static final int VAL_ERR_RESULT_NOT_VALID_DECIMAL = -2005;
+
+	/**
+	 * Error on {0} check {1}. Cannot parse value {0} as INTEGER. Found in
+	 * column: {1} Table: {2} Database: {4}
+	 */
+	public static final int VAL_ERR_RESULT_NOT_VALID_INTEGER = -2006;
 }
