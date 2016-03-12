@@ -6,10 +6,13 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.dbquality.checks.CheckTypeEnum;
 import com.dbquality.checks.ColumnTypeEnum;
+import com.dbquality.consts.AppConsts;
 import com.dbquality.distinct.checks.elements.ColumnDistinctElement;
 import com.dbquality.logs.DQLogger;
 import com.dbquality.properties.ApplicationMessagesHolder;
+import com.dbquality.properties.ApplicationPropertiesHolder;
 import com.dbquality.properties.MessageCodes;
 import com.dbquality.utils.TypeUtils;
 
@@ -67,7 +70,7 @@ public class DistinctXMLValidator {
 				return true;
 			}
 			logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_DATE_WITHOUT_DATE_FORMAT,
-					column.getId(), column.getType()));
+					CheckTypeEnum.DISTINCT, column.getId(), column.getName()));
 
 			return false;
 		} else {
@@ -90,8 +93,9 @@ public class DistinctXMLValidator {
 		ColumnDistinctElement returnColumn = columnElements.put(key, column);
 
 		if (returnColumn != null) {
-			logger.error(
-					ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_DISTINCT_CHECKS_SAME_ID, key));
+			logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_DUPLICATE_CHECKS,
+					CheckTypeEnum.DISTINCT, AppConsts.ID, column.getId(), ApplicationPropertiesHolder.getInstance()
+							.getProperties().get(AppConsts.PROPS_CHECKS_DISTINCT_XML_LOCATION)));
 			return false;
 		}
 		return true;
@@ -131,7 +135,8 @@ public class DistinctXMLValidator {
 		case VARCHAR:
 			break;
 		default:
-			logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_UNEXPECTED_VALUE_OF_TYPE));
+			logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_UNEXPECTED_VALUE_OF_TYPE,
+					CheckTypeEnum.DISTINCT, column.getId()));
 			return false;
 
 		}
@@ -151,8 +156,10 @@ public class DistinctXMLValidator {
 
 			if (!TypeUtils.validateDate(value, column.getDateFormat())) {
 
-				logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NOT_VALID_DATE, value,
-						column.getDateFormat(), column.getName(), column.getTableName(), column.getDatabaseName()));
+				logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NOT_VALID_DATE,
+						CheckTypeEnum.DISTINCT, column.getId(), value, column.getDateFormat(),
+						ApplicationPropertiesHolder.getInstance().getProperties()
+								.getProperty(AppConsts.PROPS_CHECKS_DISTINCT_XML_LOCATION)));
 
 				return false;
 			}
@@ -173,7 +180,8 @@ public class DistinctXMLValidator {
 			if (!TypeUtils.validateInteger(value)) {
 
 				logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NOT_VALID_INTEGER,
-						value, column.getName(), column.getTableName(), column.getDatabaseName()));
+						CheckTypeEnum.DISTINCT, column.getId(), value, ApplicationPropertiesHolder.getInstance()
+								.getProperties().get(AppConsts.PROPS_CHECKS_DISTINCT_XML_LOCATION)));
 				return false;
 			}
 		}
@@ -192,7 +200,8 @@ public class DistinctXMLValidator {
 
 			if (!TypeUtils.validateDecimal(value)) {
 				logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NOT_VALID_DECIMAL,
-						value, column.getName(), column.getTableName(), column.getDatabaseName()));
+						CheckTypeEnum.DISTINCT, column.getId(), value, ApplicationPropertiesHolder.getInstance()
+								.getProperties().getProperty(AppConsts.PROPS_CHECKS_DISTINCT_XML_LOCATION)));
 				return false;
 			}
 		}

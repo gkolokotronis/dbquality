@@ -3,6 +3,7 @@ package com.dbquality.custom.checks.elements;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
+import com.dbquality.checks.CheckTypeEnum;
 import com.dbquality.custom.checks.enums.ExpectedCountCheckEnum;
 import com.dbquality.exceptions.ExceptionFactory;
 import com.dbquality.logs.DQLogger;
@@ -124,8 +125,8 @@ public class CustomCheckElement {
 			this.expectedCountCheck = ExpectedCountCheckEnum.LESS_THAN_OR_EQUAL_TO;
 		} else {
 			throw ExceptionFactory.createException(RuntimeException.class,
-					MessageCodes.ERR_INVALID_EXPECTED_COUNT_CHECK, null, logger, Level.ERROR, type,
-					ExpectedCountCheckEnum.values());
+					MessageCodes.ERR_INVALID_EXPECTED_COUNT_CHECK_FOR_CHECK, null, logger, Level.ERROR, type,
+					ExpectedCountCheckEnum.values(), CheckTypeEnum.CUSTOM, getCheckName());
 		}
 	}
 

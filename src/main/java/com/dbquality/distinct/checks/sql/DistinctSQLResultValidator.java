@@ -60,7 +60,7 @@ public class DistinctSQLResultValidator {
 
 		} else {
 			logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NO_ROWS_FOUND,
-					column.getDatabaseName(), column.getTableName()));
+					CheckTypeEnum.DISTINCT, column.getId(), column.getDatabaseName(), column.getTableName()));
 
 		}
 
@@ -90,9 +90,10 @@ public class DistinctSQLResultValidator {
 			switch (column.getType()) {
 			case DATE:
 				if (!TypeUtils.validateDate(valueOfColumn, column.getDateFormat())) {
-					logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NOT_VALID_DATE,
-							valueOfColumn, column.getDateFormat(), column.getName(), column.getTableName(),
-							column.getDatabaseName()));
+					logger.validationError(
+							ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_RESULT_NOT_VALID_DATE,
+									CheckTypeEnum.DISTINCT, column.getId(), valueOfColumn, column.getDateFormat(),
+									column.getName(), column.getTableName(), column.getDatabaseName()));
 				} else {
 					DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -107,8 +108,8 @@ public class DistinctSQLResultValidator {
 						// validated. XML valid value were validated on the
 						// loading of the xml and value of the column was
 						// validated on the previous step
-						logger.error(ApplicationMessagesHolder.getInstance()
-								.getMessage(MessageCodes.ERR_VALIDATING_BOTH_DATES));
+						logger.validationError(ApplicationMessagesHolder.getInstance().getMessage(
+								MessageCodes.ERR_VALIDATING_BOTH_DATES, CheckTypeEnum.DISTINCT, column.getId()));
 						return false;
 					}
 				}
@@ -122,7 +123,8 @@ public class DistinctSQLResultValidator {
 						return true;
 					}
 				} catch (NumberFormatException e) {
-					logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NOT_VALID_DECIMAL,
+					logger.validationError(ApplicationMessagesHolder.getInstance().getMessage(
+							MessageCodes.ERR_RESULT_NOT_VALID_DECIMAL, CheckTypeEnum.DISTINCT, column.getId(),
 							valueOfColumn, column.getName(), column.getTableName(), column.getDatabaseName()));
 					return false;
 
@@ -135,7 +137,8 @@ public class DistinctSQLResultValidator {
 						return true;
 					}
 				} catch (NumberFormatException e) {
-					logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_NOT_VALID_INTEGER,
+					logger.validationError(ApplicationMessagesHolder.getInstance().getMessage(
+							MessageCodes.ERR_RESULT_NOT_VALID_INTEGER, CheckTypeEnum.DISTINCT, column.getId(),
 							valueOfColumn, column.getName(), column.getTableName(), column.getDatabaseName()));
 					return false;
 

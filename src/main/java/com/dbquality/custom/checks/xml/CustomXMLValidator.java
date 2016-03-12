@@ -10,6 +10,7 @@ import com.dbquality.consts.AppConsts;
 import com.dbquality.custom.checks.elements.CustomCheckElement;
 import com.dbquality.logs.DQLogger;
 import com.dbquality.properties.ApplicationMessagesHolder;
+import com.dbquality.properties.ApplicationPropertiesHolder;
 import com.dbquality.properties.MessageCodes;
 
 /**
@@ -59,7 +60,8 @@ public class CustomXMLValidator {
 
 		if (returnCheck != null) {
 			logger.error(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_DUPLICATE_CHECKS,
-					CheckTypeEnum.CUSTOM, AppConsts.NAME, name));
+					CheckTypeEnum.CUSTOM, AppConsts.NAME, name, ApplicationPropertiesHolder.getInstance()
+							.getProperties().get(AppConsts.PROPS_CHECKS_CUSTOM_XML_LOCATION)));
 			return false;
 		}
 		return true;

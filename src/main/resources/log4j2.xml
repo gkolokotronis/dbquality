@@ -9,11 +9,13 @@
 		<Console name="console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} (%-5level) - %msg%xEx%n"/>
 		</Console>
-		<File name="log" fileName="logs/dbquality.log" append="true">
+		<RollingFile name="log" fileName="logs/dbquality.log" filePattern="logs/dbquality_%i.log">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} (%-5level) %class{36} (%L) %M - %msg%xEx%n"/>
-		</File>
+			<OnStartupTriggeringPolicy />
+		</RollingFile>
 		
-		<File name="validation" fileName="logs/dbquality-result.log" append="false">
+		<RollingFile name="validation" fileName="logs/dbquality-result.log" filePattern="logs/dbquality_result-%i.log">
+			<OnStartupTriggeringPolicy />
 			<Filters>
 				<ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
 				<ThresholdFilter level="fatal" onMatch="DENY" onMismatch="NEUTRAL"/>
@@ -24,7 +26,7 @@
 				<ThresholdFilter level="VALIDATION_ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
 			</Filters>
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} (%-5level) - %msg%xEx%n"/>
-		</File>
+		</RollingFile>
 		
 	</Appenders>
 
