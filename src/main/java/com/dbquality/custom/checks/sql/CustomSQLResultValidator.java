@@ -29,7 +29,7 @@ public class CustomSQLResultValidator {
 
 				if (!validateResult(valueOfCount)) {
 					logger.validationError(ApplicationMessagesHolder.getInstance().getMessage(
-							MessageCodes.ERR_WRONG_EXPECTED_COUNT, CheckTypeEnum.CUSTOM, checkToValidate.getCheckName(),
+							MessageCodes.VAL_ERR_WRONG_EXPECTED_COUNT, CheckTypeEnum.CUSTOM, checkToValidate.getCheckName(),
 							valueOfCount, getCheckToValidate().getExpectedCountCheck(),
 							getCheckToValidate().getExpectedCount()));
 
