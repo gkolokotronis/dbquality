@@ -51,16 +51,16 @@ public final class ApplicationPropertiesHolder {
 		try {
 			inputStream = new FileInputStream(propertiesFilePath);
 		} catch (FileNotFoundException e) {
-			throw ExceptionFactory.createException(RuntimeException.class, MessageCodes.ERR_PROPERTY_FILE_NOT_FOUND, e,
-					logger, Level.ERROR, propertiesFilePath);
+			throw ExceptionFactory.createException(RuntimeException.class, "Property file %s not found", e, logger,
+					Level.ERROR, propertiesFilePath);
 
 		}
 
 		try {
 			properties.load(inputStream);
 		} catch (IOException e) {
-			throw ExceptionFactory.createException(RuntimeException.class, MessageCodes.ERR_WHILE_READING_PROPERTY_FILE,
-					e, logger, Level.ERROR, propertiesFilePath);
+			throw ExceptionFactory.createException(RuntimeException.class,
+					"Something went wrong while reading property file %s", e, logger, Level.ERROR, propertiesFilePath);
 		}
 
 	}

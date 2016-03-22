@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
 import com.dbquality.properties.ApplicationMessagesHolder;
-import com.dbquality.properties.MessageCodes;
 
 /**
  * This class defines exception factory which is used to create exceptions.
@@ -32,6 +31,8 @@ public final class ExceptionFactory {
 	 *            - type of the exception to be returned
 	 * @param errorCode
 	 *            - error code
+	 * @param errorMessage
+	 *            - error Message
 	 * @param cause
 	 *            - cause of the exception
 	 * @param logger
@@ -41,12 +42,16 @@ public final class ExceptionFactory {
 	 * @param args
 	 *            - arguments
 	 */
-	public static <T> T createException(Class<T> clazz, int errorCode, Throwable cause, Logger logger, Level level,
-			Object... args) {
+	private static <T> T createException(Class<T> clazz, int errorCode, String errorMessage, Throwable cause,
+			Logger logger, Level level, Object... args) {
 		T ex = null;
 		String msg = null;
 
-		msg = ApplicationMessagesHolder.getInstance().getMessage(errorCode, args);
+		if (errorCode < 0) {
+			msg = ApplicationMessagesHolder.getInstance().getMessage(errorCode, args);
+		} else {
+			msg = String.format(errorMessage, args);
+		}
 
 		if (logger != null && msg != null) {
 			if (level == null) {
@@ -61,11 +66,55 @@ public final class ExceptionFactory {
 			ex = constr.newInstance(msg, cause);
 
 		} catch (Exception e) {
-			msg = ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.ERR_WHILE_CREATING_INSTANCE_OF,
-					clazz);
-
+			msg = "Exception while creating an instance of: " + clazz;
 			throw new RuntimeException(msg, e);
 		}
 		return ex;
+	}
+
+	/**
+	 * Constructs a new Exception with the given error code or error message,
+	 * cause of the exception, logger and list of error arguments in case error
+	 * code is provided.
+	 * 
+	 * @param clazz
+	 *            - type of the exception to be returned
+	 * @param errorCode
+	 *            - error code
+	 * @param cause
+	 *            - cause of the exception
+	 * @param logger
+	 *            - logger for logging the error
+	 * @param level
+	 *            - the priority of the logger
+	 * @param args
+	 *            - arguments
+	 */
+	public static <T> T createException(Class<T> clazz, int errorCode, Throwable cause, Logger logger, Level level,
+			Object... args) {
+		return createException(clazz, errorCode, null, cause, logger, level, args);
+	}
+
+	/**
+	 * Constructs a new Exception with the given error code or error message,
+	 * cause of the exception, logger and list of error arguments in case error
+	 * code is provided.
+	 * 
+	 * @param clazz
+	 *            - type of the exception to be returned
+	 * @param errorMessage
+	 *            - error message
+	 * @param cause
+	 *            - cause of the exception
+	 * @param logger
+	 *            - logger for logging the error
+	 * @param level
+	 *            - the priority of the logger
+	 * @param args
+	 *            - arguments
+	 */
+	public static <T> T createException(Class<T> clazz, String errorMessage, Throwable cause, Logger logger,
+			Level level, Object... args) {
+		return createException(clazz, 0, errorMessage, cause, logger, level, args);
 	}
 }
