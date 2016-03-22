@@ -25,7 +25,7 @@ public final class ApplicationMessagesHolder {
 
 	private final static ApplicationMessagesHolder SINGLETON = new ApplicationMessagesHolder();
 
-	private final static String BUNDLE_NAME = "ApplicationMessages";
+	private final static String BUNDLE_NAME = "applicationmessages";
 
 	private final static String MESSAGE_CODE_PREFIX = "DBQ";
 
@@ -51,7 +51,7 @@ public final class ApplicationMessagesHolder {
 	}
 
 	/**
-	 * Loads the ApplicationMessages.properties file.
+	 * Loads the applicationmessages.properties file.
 	 * 
 	 */
 	private void load() {
