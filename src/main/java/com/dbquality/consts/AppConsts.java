@@ -58,4 +58,8 @@ public final class AppConsts {
 
 	public static String PROPS_CHECK_CUSTOM_RUN = "checks.custom.run";
 
+	public static String PROPS_LOCALE_COUNTRY = "locale.country";
+
+	public static String PROPS_LOCALE_LANGUAGE = "locale.language";
+
 }

@@ -1,11 +1,15 @@
 package com.dbquality.properties;
 
 import java.text.MessageFormat;
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.apache.commons.lang3.LocaleUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
+import com.dbquality.consts.AppConsts;
 import com.dbquality.exceptions.ExceptionFactory;
 import com.dbquality.logs.DQLogger;
 
@@ -21,9 +25,11 @@ public final class ApplicationMessagesHolder {
 
 	private final static ApplicationMessagesHolder SINGLETON = new ApplicationMessagesHolder();
 
-	private final static String BUNDLE_NAME = "ApplicationMessages";
+	private final static String BUNDLE_NAME = "applicationmessages";
 
 	private final static String MESSAGE_CODE_PREFIX = "DBQ";
+
+	private static Locale locale;
 
 	/**
 	 * Resource bundle, contains all the messages from
@@ -36,10 +42,44 @@ public final class ApplicationMessagesHolder {
 	 */
 	private ApplicationMessagesHolder() {
 		try {
-			this.resourceMessages = getResourceBundle(BUNDLE_NAME);
+			this.load();
 		} catch (MissingResourceException e) {
 			throw ExceptionFactory.createException(RuntimeException.class, MessageCodes.ERR_MISSING_BUNDLE, e, logger,
 					Level.ERROR, BUNDLE_NAME);
+		}
+
+	}
+
+	/**
+	 * Loads the applicationmessages.properties file.
+	 * 
+	 */
+	private void load() {
+		Boolean wrongLocale = false;
+		String country = ApplicationPropertiesHolder.getInstance().getProperties()
+				.getProperty(AppConsts.PROPS_LOCALE_COUNTRY);
+		String language = ApplicationPropertiesHolder.getInstance().getProperties()
+				.getProperty(AppConsts.PROPS_LOCALE_LANGUAGE);
+
+		Locale newLocale = null;
+		try {
+			newLocale = Locale.ENGLISH;
+			if (StringUtils.isNotEmpty(language) && StringUtils.isEmpty(country)) {
+				newLocale = LocaleUtils.toLocale(language);
+			} else if (StringUtils.isNotEmpty(language) && StringUtils.isNotEmpty(country)) {
+				newLocale = LocaleUtils.toLocale(language + "_" + country);
+			}
+
+		} catch (IllegalArgumentException e) {
+
+			wrongLocale = true;
+		}
+
+		locale = newLocale;
+		this.resourceMessages = getResourceBundle(BUNDLE_NAME);
+		if (wrongLocale) {
+			logger.warn(
+					getMessage(MessageCodes.ERR_INVALID_COUNTRY_OR_LANGUAGE, AppConsts.PROPERTIES_FILE_NAME, locale));
 		}
 
 	}
@@ -65,7 +105,7 @@ public final class ApplicationMessagesHolder {
 
 	/**
 	 * Returns resource bundle based on default locale defined in
-	 * aprm-portal-config.xml file
+	 * application.properties file.
 	 * 
 	 * @param bundleName
 	 *            - the name of the resource bundle.
@@ -73,7 +113,7 @@ public final class ApplicationMessagesHolder {
 	 * @return Resource Bundle
 	 */
 	private static ResourceBundle getResourceBundle(String bundleName) {
-
-		return ResourceBundle.getBundle(bundleName);
+		return ResourceBundle.getBundle(bundleName, locale);
 	}
+
 }

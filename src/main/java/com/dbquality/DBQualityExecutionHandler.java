@@ -1,9 +1,5 @@
 package com.dbquality;
 
-import java.io.File;
-
-import org.apache.logging.log4j.Level;
-
 import com.dbquality.consts.AppConsts;
 import com.dbquality.custom.checks.elements.CustomRootElement;
 import com.dbquality.custom.checks.sql.CustomSQLExecutionHandler;
@@ -11,7 +7,6 @@ import com.dbquality.custom.checks.xml.CustomXMLHolder;
 import com.dbquality.distinct.checks.elements.DistinctRootElement;
 import com.dbquality.distinct.checks.sql.DistinctSQLExecutionHandler;
 import com.dbquality.distinct.checks.xml.DistinctXMLHolder;
-import com.dbquality.exceptions.ExceptionFactory;
 import com.dbquality.logs.DQLogger;
 import com.dbquality.properties.ApplicationMessagesHolder;
 import com.dbquality.properties.ApplicationPropertiesHolder;
@@ -40,7 +35,6 @@ public class DBQualityExecutionHandler {
 
 		logger.info(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.MSG_APPLICATION_STARTED));
 
-		checkConfigProperties();
 		setProperties();
 		if (isRunDistinctChecks()) {
 			runDistinctChecks();
@@ -51,26 +45,6 @@ public class DBQualityExecutionHandler {
 
 		logger.info(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.MSG_APPLICATION_ENDED));
 
-	}
-
-	/**
-	 * Checks if application properties file exists or not.
-	 *
-	 */
-	private void checkConfigProperties() throws IllegalArgumentException {
-		logger.info(ApplicationMessagesHolder.getInstance().getMessage(MessageCodes.MSG_FILE_EXISTS,
-				AppConsts.PROPERTIES_FILE_NAME));
-
-		String propertiesPath = System.getProperty("user.dir") + System.getProperty("file.separator")
-				+ AppConsts.PROPERTIES_FILE_NAME;
-		File varTmpDir = new File(propertiesPath);
-		boolean exists = varTmpDir.exists();
-
-		if (!exists) {
-			throw ExceptionFactory.createException(IllegalArgumentException.class,
-					MessageCodes.ERR_PROPERTY_FILE_NOT_FOUND, null, logger, Level.ERROR, propertiesPath);
-
-		}
 	}
 
 	/**
